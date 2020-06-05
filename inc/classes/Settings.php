@@ -23,7 +23,7 @@ class Settings {
             'edit_posts',
             FOKS_NAME,
             [ $this, FOKS_NAME ],
-            FOKS_URL . '/assets/img/icon.png'
+            FOKS_URL . '/inc/img/icon.png'
         );
     }
 
