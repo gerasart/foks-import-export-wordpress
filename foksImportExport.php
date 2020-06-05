@@ -64,7 +64,7 @@ class foksImportExport {
     }
 }
 
-new Foks();
+new foksImportExport();
 
 
 require 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
