@@ -1,0 +1,20 @@
+{
+  "name": "gerasart/foks",
+  "authors": [
+    {
+      "name": "Gerasart",
+      "email": "gerasymenkoph@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Foks\\": "inc/classes/"
+    }
+  },
+  "require-dev": {
+    "haydenpierce/class-finder": "^0.2.0"
+  },
+  "require": {
+    "cloudipsp/php-sdk-v2": "^1.0"
+  }
+}

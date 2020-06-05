@@ -1,0 +1,101 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d521eb34f421db06aed524f1d4c46222",
+    "packages": [
+        {
+            "name": "cloudipsp/php-sdk-v2",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cloudipsp/php-sdk-v2.git",
+                "reference": "1a83707ba965d0b7677dac16d0f5a67438160651"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cloudipsp/php-sdk-v2/zipball/1a83707ba965d0b7677dac16d0f5a67438160651",
+                "reference": "1a83707ba965d0b7677dac16d0f5a67438160651",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^5.4|^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cloudipsp\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitriy",
+                    "email": "dmmatrix222@gmail.com"
+                }
+            ],
+            "description": "Cloudipsp php sdk v2",
+            "time": "2020-06-04T13:15:25+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "haydenpierce/class-finder",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/hpierce1102/ClassFinder.git",
+                "reference": "8a653d80ba9bd5966322022d1b5d3498adfe7516"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/hpierce1102%2FClassFinder/repository/archive.zip?sha=8a653d80ba9bd5966322022d1b5d3498adfe7516",
+                "reference": "8a653d80ba9bd5966322022d1b5d3498adfe7516",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "4.8.36"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HaydenPierce\\ClassFinder\\": "src/",
+                    "HaydenPierce\\ClassFinder\\UnitTest\\": "test/unit"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hayden Pierce",
+                    "email": "hayden@haydenpierce.com"
+                }
+            ],
+            "time": "2018-09-23T17:59:52+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
