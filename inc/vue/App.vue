@@ -5,16 +5,15 @@
 </template>
 
 <script>
-  import List from "./components/List";
   import Settings from "./components/Settings";
 
   export default {
     name: "app",
-    components: {Settings, List},
+    components: {Settings},
   }
 </script>
 
 <style lang="scss">
-  @import "~ant-design-vue/dist/antd.css";
+  @import "../../node_modules/ant-design-vue/dist/antd.css";
   @import "../styles/main";
 </style>

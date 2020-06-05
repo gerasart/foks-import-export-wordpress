@@ -15,4 +15,15 @@ trait LocalVars {
             'import' => json_encode( get_option( 'foks_import' ) ),
         ];
     }
+    public static function localAdminVars() {
+        echo "<script>";
+        foreach (self::$admin_vars as $key => $value) {
+            if ( !is_string($value) ) {
+                $value = json_encode($value, JSON_UNESCAPED_UNICODE);
+            }
+
+            echo "window.{$key} = {$value};" . "\n";
+        }
+        echo "</script>";
+    }
 }

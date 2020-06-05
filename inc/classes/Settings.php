@@ -11,28 +11,31 @@ namespace Foks;
 class Settings {
 
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'settingPage' ] );
-        add_action( "admin_menu", [ $this, 'display_theme_panel_fields' ] );
+        add_action( 'admin_menu', [ $this, 'settingPage' ], 12 );
+        add_filter( 'plugin_action_links_' . FOKS_BASENAME, [ $this, 'plugin_action_links' ] );
+
     }
 
     public function settingPage() {
         add_menu_page(
             'FoksImportExport',
             'FoksImportExport',
-            'manage_options',
+            'edit_posts',
             FOKS_NAME,
             [ $this, FOKS_NAME ],
             FOKS_URL . '/assets/img/icon.png'
         );
     }
 
-
-    public function display_theme_panel_fields() {
-        register_setting( "section", "current_plugins" );
-    }
-
     public function foks() {
         include FOKS_PATH . 'views/index.php';
+    }
+
+    public function plugin_action_links( $links ) {
+        $settings_link = '<a href="' . menu_page_url( FOKS_NAME, false ) . '">' . esc_html( __( 'Settings', 'custom' ) ) . '</a>';
+        array_unshift( $links, $settings_link );
+
+        return $links;
     }
 
 

@@ -86,10 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./assets/styles/main.scss":
-/*!*********************************!*\
-  !*** ./assets/styles/main.scss ***!
-  \*********************************/
+/***/ "./inc/styles/main.scss":
+/*!******************************!*\
+  !*** ./inc/styles/main.scss ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -100,13 +100,13 @@
 /***/ }),
 
 /***/ 0:
-/*!***************************************!*\
-  !*** multi ./assets/styles/main.scss ***!
-  \***************************************/
+/*!************************************!*\
+  !*** multi ./inc/styles/main.scss ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Applications/Ampps/www/otpiska/wp-content/plugins/UniSender/assets/styles/main.scss */"./assets/styles/main.scss");
+module.exports = __webpack_require__(/*! D:\wamp\www\foksImportExport\inc/styles/main.scss */"./inc/styles/main.scss");
 
 
 /***/ })
