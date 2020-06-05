@@ -21,7 +21,7 @@ require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 
 use HaydenPierce\ClassFinder\ClassFinder;
 
-class foksImportExport {
+class ForksImportExport {
 
     private static $basedir;
 
@@ -64,7 +64,7 @@ class foksImportExport {
     }
 }
 
-new foksImportExport();
+new ForksImportExport();
 
 
 require 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
@@ -73,8 +73,8 @@ require 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 'https://github.com/gerasart/foksImportExport/',
 __FILE__,
-'foksImportExport'
+'forks-import-export'
 );
-$myUpdateChecker->setAuthentication('7f6f3a685557493c80fa6020c12880bb0b192e15');
+$myUpdateChecker->setAuthentication('6539d3f6b6df3db249de160e713aaa5301d80262');
 $myUpdateChecker->setBranch('master');
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
