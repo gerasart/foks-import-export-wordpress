@@ -1,6 +1,3 @@
-# Core______________________________________
-/wordpress/
-
 # Theme______________________________________
 
 # Node.js Tools
@@ -24,19 +21,20 @@ nbproject/
 
 
 #Build
-webpack.config.js
-postcss.config.js
-/webpack/
-/logs/
-/assets/styles/
-/assets/vue/
-*.env
-*.env.sample
-*.editorconfig
-*.eslintrc.js
-*.stylelintrc.js
-babel.config.js
-postcss.config.js
+#/wordpress/
+#webpack.config.js
+#postcss.config.js
+#/webpack/
+#/logs/
+#/assets/styles/
+#/assets/vue/
+#*.env
+#*.env.sample
+#*.editorconfig
+#*.eslintrc.js
+#*.stylelintrc.js
+#babel.config.js
+#postcss.config.js
 
 
 markup/dev/_partials/*
