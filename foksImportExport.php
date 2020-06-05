@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: Foks Import Export xml Plugin for Wordpress
+ * Plugin Name: FoksImportExport
  * Version: 1.1
  * Plugin URI: https://#
  * Description: Import Export Integraton.
@@ -21,7 +21,7 @@ require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 
 use HaydenPierce\ClassFinder\ClassFinder;
 
-class Foks {
+class foksImportExport {
 
     private static $basedir;
 
@@ -73,7 +73,7 @@ require 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 'https://github.com/gerasart/foksImportExport/',
 __FILE__,
-'Foks'
+'foksImportExport'
 );
 $myUpdateChecker->setAuthentication('7f6f3a685557493c80fa6020c12880bb0b192e15');
 $myUpdateChecker->setBranch('master');

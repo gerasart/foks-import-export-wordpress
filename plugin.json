@@ -1,6 +1,6 @@
 {
-  "name" : "Foks Import Export xml Plugin for Wordpress",
-  "version" : "2.2",
+  "name" : "FoksImportExport",
+  "version" : "1.0",
   "download_url" : "https://github.com/gerasart/foksImportExport",
   "sections" : {
     "description" : "ImportExport"
