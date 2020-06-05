@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Foks Import Export xml Plugin for Wordpress
- * Version: 1.0
+ * Version: 1.1
  * Plugin URI: https://#
  * Description: Import Export Integraton.
  * Author: Gerasart
@@ -67,7 +67,7 @@ class Foks {
 new Foks();
 
 
-require 'vendor/updater/plugin-update-checker.php';
+require 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://github.com/gerasart/foksImportExport/',__FILE__,'foksImportExport');
 $myUpdateChecker->setAuthentication('a283aeca2b507dd9d43b8e5b0cf8f6a3e8be50ad');

@@ -91,11 +91,9 @@
   !*** ./inc/styles/main.scss ***!
   \******************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-// extracted by mini-css-extract-plugin
-    if(false) { var cssReload; }
-  
+throw new Error("Module build failed (from ./node_modules/mini-css-extract-plugin/dist/loader.js):\nModuleBuildError: Module build failed (from (webpack)-import-glob/index.js):\nError: ENOENT: no such file or directory, open 'D:\\wamp\\www\\foksImportExport\\inc\\styles\\main.scss'\n    at runLoaders (D:\\wamp\\www\\foksImportExport\\node_modules\\webpack\\lib\\NormalModule.js:316:20)\n    at D:\\wamp\\www\\foksImportExport\\node_modules\\loader-runner\\lib\\LoaderRunner.js:367:11\n    at D:\\wamp\\www\\foksImportExport\\node_modules\\loader-runner\\lib\\LoaderRunner.js:203:19\n    at process.nextTick (D:\\wamp\\www\\foksImportExport\\node_modules\\enhanced-resolve\\lib\\CachedInputFileSystem.js:85:15)\n    at process._tickCallback (internal/process/next_tick.js:61:11)");
 
 /***/ }),
 
