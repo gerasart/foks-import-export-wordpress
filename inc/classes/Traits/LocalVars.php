@@ -6,11 +6,7 @@
  * Time: 4:44 PM
  */
 
-namespace UniSender\Traits;
-
-use UniSender\DBCreator;
-use UniSender\Helpers;
-use UniSender\IntegrationContactForm7;
+namespace Foks\Traits;
 
 trait LocalVars {
     public function viewData() {

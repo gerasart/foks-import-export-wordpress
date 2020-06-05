@@ -6,7 +6,7 @@
  * Time: 2:51 PM
  */
 
-namespace UniSender;
+namespace Foks;
 
 
 use Foks\Helpers\AjaxHelper;
