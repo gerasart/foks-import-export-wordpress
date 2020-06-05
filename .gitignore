@@ -27,6 +27,9 @@ nbproject/
 webpack.config.js
 postcss.config.js
 /webpack/
+/logs/
+/assets/styles/
+/assets/vue/
 *.env
 *.env.sample
 *.editorconfig
