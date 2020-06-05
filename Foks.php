@@ -68,8 +68,12 @@ new Foks();
 
 
 require 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
-
-$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://github.com/gerasart/foksImportExport/',__FILE__,'foksImportExport');
+    
+$myUpdateChecker = new Puc_v4p9_Vcs_PluginUpdateChecker(
+    new Puc_v4p9_Vcs_GitLabApi('https://github.com/gerasart/foksImportExport/'),
+    FOKS_PATH,
+    'foks'
+);
 $myUpdateChecker->setAuthentication('7f6f3a685557493c80fa6020c12880bb0b192e15');
 $myUpdateChecker->setBranch('master');
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
