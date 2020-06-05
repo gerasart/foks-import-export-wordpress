@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: FoksImportExport
- * Version: 1.2
+ * Version: 1.3
  * Plugin URI: https://#
  * Description: Import Export Integraton.
  * Author: Gerasart
