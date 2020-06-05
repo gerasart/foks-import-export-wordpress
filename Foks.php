@@ -14,7 +14,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 define( 'FOKS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FOKS_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOKS_PAGE', $_SERVER['QUERY_STRING'] );
-define( 'FOKS_NAME', 'foks');
+define( 'FOKS_NAME', 'foks' );
 
 require_once FOKS_PATH . '/vendor/autoload.php';
 
@@ -26,7 +26,6 @@ class Foks {
     private static $basedir;
 
     public function __construct() {
-//        add_action( 'acf/init', [ __CLASS__, 'init' ] );
         self::init();
     }
 

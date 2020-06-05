@@ -6,7 +6,7 @@
  * Time: 6:13 PM
  */
 
-namespace UniSender;
+namespace Foks;
 
 class Settings {
 
