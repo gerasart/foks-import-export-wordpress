@@ -1,0 +1,24 @@
+{
+  "post_types": {
+    "projects": {
+      "post_title": {},
+      "post_content": {},
+      "post_excerpt": {}
+    }
+  },
+  "taxonomies": {
+    "tags" : {}
+  },
+  "post_fields": {
+    "_bsf_article_name": {},
+    "_bsf_article_desc": {},
+    "_bsf_article_author": {}
+  },
+  "admin_pages": [
+    "property_page_property_settings",
+    "toplevel_page_theme-settings",
+    "theme-settings_page_translation",
+    "yikes-inc-easy-mailchimp",
+    "yikes-mailchimp-edit-form"
+  ]
+}

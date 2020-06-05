@@ -1,0 +1,15 @@
+.wp-admin .dashicons-before.dashicons-fa.fas:before, .wp-admin .dashicons-before.dashicons-fa.far:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900; }
+
+.wp-admin .dashicons-before.dashicons-fa.fab:before {
+  font-family: "Font Awesome 5 Brands";
+  font-weight: 900; }
+
+.wp-admin .acf-image-uploader .image-wrap img[src$=".svg"] {
+  min-height: auto;
+  min-width: auto;
+  max-width: 100%; }
+
+
+/*# sourceMappingURL=admin.css.map*/
