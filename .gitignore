@@ -1,5 +1,6 @@
 # Core______________________________________
 /wordpress/
+
 # Theme______________________________________
 
 # Node.js Tools
@@ -20,6 +21,20 @@ nbproject/
 *.cache
 *.ide-wal
 *.ide-shm
+
+
+#Build
+webpack.config.js
+postcss.config.js
+/webpack/
+*.env
+*.env.sample
+*.editorconfig
+*.eslintrc.js
+*.stylelintrc.js
+babel.config.js
+postcss.config.js
+
 
 markup/dev/_partials/*
 markup/dev/js/main.min.js
