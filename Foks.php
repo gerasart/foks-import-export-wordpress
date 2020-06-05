@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Foks Import Export xml Plugin for Wordpress
- * Version: 1.6
+ * Version: 2.6
  * Plugin URI: https://#
  * Description: Import Export Integraton.
  * Author: Gerasart
