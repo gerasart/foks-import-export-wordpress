@@ -15,4 +15,11 @@ class Helpers {
         file_put_contents( $dir, json_encode( $data ) . "\n", FILE_APPEND );
     }
 
+    /* Debug functions */
+    public static function debug( $var ) {
+        echo "<pre>";
+        var_dump( $var );
+        echo "</pre>";
+    }
+
 }
