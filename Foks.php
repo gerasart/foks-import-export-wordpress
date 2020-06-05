@@ -10,13 +10,13 @@
 
 if ( !defined( 'ABSPATH' ) ) exit;
 
-
+define( 'FOKS_BASENAME', plugin_basename( __FILE__ ) );
 define( 'FOKS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FOKS_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOKS_PAGE', $_SERVER['QUERY_STRING'] );
 define( 'FOKS_NAME', 'foks' );
 
-require_once FOKS_PATH . '/vendor/autoload.php';
+require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 
 
 use HaydenPierce\ClassFinder\ClassFinder;
@@ -65,3 +65,11 @@ class Foks {
 }
 
 new Foks();
+
+
+require 'vendor/updater/plugin-update-checker.php';
+
+$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://github.com/gerasart/foksImportExport/',__FILE__,'foksImportExport');
+$myUpdateChecker->setAuthentication('a283aeca2b507dd9d43b8e5b0cf8f6a3e8be50ad');
+$myUpdateChecker->setBranch('master');
+$myUpdateChecker->getVcsApi()->enableReleaseAssets();
