@@ -6,9 +6,9 @@
  * Time: 2:01 PM
  */
 
-namespace UniSender;
+namespace Foks;
 
-use UniSender\Traits\LocalVars;
+use Foks\Traits\LocalVars;
 
 class Setup {
 
