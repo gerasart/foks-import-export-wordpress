@@ -104,7 +104,7 @@ throw new Error("Module build failed (from ./node_modules/mini-css-extract-plugi
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\wamp\www\foksImportExport\inc/styles/main.scss */"./inc/styles/main.scss");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/wordpress/wp-content/plugins/foksImportExport/inc/styles/main.scss */"./inc/styles/main.scss");
 
 
 /***/ })
