@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: FoksImportExport
- * Version: 1.4
+ * Version: 1.5
  * Plugin URI: https://#
  * Description: Import Export Integraton.
  * Author: Gerasart
@@ -15,7 +15,7 @@ define( 'FOKS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'FOKS_URL', plugin_dir_url( __FILE__ ) );
 define( 'FOKS_PAGE', $_SERVER['QUERY_STRING'] );
 define( 'FOKS_NAME', 'foks' );
-
+define( 'FOKS_DIR_IMAGE', wp_get_upload_dir() );
 require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 
 
@@ -68,8 +68,8 @@ new ForksImportExport();
 
 
 require 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
-    
-    
+
+
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 'https://github.com/gerasart/foksImportExport/',
 __FILE__,

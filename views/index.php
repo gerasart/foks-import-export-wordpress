@@ -1,4 +1,4 @@
 <div class="wrap">
     <h2><?php echo get_admin_page_title(); ?></h2>
-    <div id="unisender"></div>
+    <div id="foks_ie"></div>
 </div>

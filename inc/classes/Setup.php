@@ -8,6 +8,7 @@
 
 namespace Foks;
 
+use Foks\Export\Export;
 use Foks\Traits\LocalVars;
 
 class Setup {
@@ -24,6 +25,8 @@ class Setup {
             add_action( 'admin_head', array( __CLASS__, 'localAdminVars' ) );
             add_action( 'init', [ $this, 'init' ] );
         }
+        add_action( 'rest_api_init', array( 'Foks\Export\Export', 'getGenerateXml' ) );
+    
     }
 
     public function init() {
