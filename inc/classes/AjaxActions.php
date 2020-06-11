@@ -25,13 +25,11 @@
                 $xml = file_get_contents($file);
                 file_put_contents(FOKS_PATH.'/logs/foks_import.xml', $xml);
                 $file_path = FOKS_URL.'/logs/foks_import.xml';
-                $data = Import::parseFile($file_path);
+                $data = Import::importData($file_path);
             }
-            $cats = $data->shop->categories;
           
-//            wp_send_json_success( $data->shop->categories );
+            wp_send_json_success( $data );
 
-//            var_dump($data);
         }
         
         public static function ajax_nopriv_saveSettings() {
