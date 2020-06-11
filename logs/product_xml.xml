@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE yml_catalog SYSTEM "shops.dtd">
+<yml_catalog date="2020-06-09 10:34">
+  <shop>
+    <name>Drop FOKS</name>
+    <company>Drop FOKS</company>
+    <url>mk.foks.biz</url>
+    <currencies>
+      <currency id="UAH" rate="1"/>
+    </currencies>
+    <categories>
+      <category id="805716" parentId="">Мангалы, барбекю, наборы для пикника</category>
+      <category id="629382" parentId="">МАНЕЖИ ДЕТСКИЕ</category>
+      <category id="651251" parentId="">Манежи детские</category>
+      <category id="4444" parentId="651251">parent Манежи детские</category>
+    </categories>
+    <offers>
+      <offer id="298187" available="true">
+        <categoryId>651251</categoryId>
+        <category>Манежи детские</category>
+        <stock_quantity>500</stock_quantity>
+        <url>https://it-baza.com.ua/p961948949-zaschitnoe-steklo-artis.html</url>
+        <price>108.00</price>
+        <price_old>999.00</price_old>
+        <currencyId>UAH</currencyId>
+        <picture>https://my.foks.biz/i/3113c13e6e0724eedf33fd91a969a61d.jpeg</picture>
+        <vendor>Artis</vendor>
+        <name>Защитное стекло Artis 2.5D CP+ на весь экран (цветное) для Huawei Mate 10 (Черный)</name>
+        <description><![CDATA[<p>Защитное стекло Artis 2.5D CP+ на весь экран для Huawei Mate 10</p>
+
+<p><strong>Особенности:</strong></p>
+
+<ul>
+	<li>Изготовлено из закаленного стекла;</li>
+	<li>Высокий коэффициент пропускания;</li>
+	<li>Статический способ поклейки;твердость 9Н;</li>
+	<li>Полностью закрывает края смарфтона;</li>
+	<li>Закругленные по технологии 2,5D края;</li>
+	<li>Не искажает цветопередачу;</li>
+</ul>]]></description>
+        <param name="Детский возраст">1 год</param>
+        <param name="Количество единиц для пересчета">Тест1</param>
+        <param name="Системные требования">Тест1</param>
+        <param name="Диаметр нити">1.75 мм</param>
+        <param name="Скорость печати">Тест1</param>
+        <param name="Технология печати">стереолитография (SLA) / Цифровая светодиодная проекция (DLP)</param>
+        <param name="Програмное обеспечение">Тест1</param>
+        <param name="Размеры">Тест1</param>
+        <param name="Количество цветов печати">3</param>
+        <param name="Цвет">Черный</param>
+        <param name="Дополнительные характеристики">Тест1</param>
+        <param name="Дисплей">Тест1</param>
+        <param name="Интерфейсы">LAN</param>
+        <param name="Высота в упаковке (см)">Тест1</param>
+        <param name="Дополнительный текст">Тест1</param>
+        <param name="Качество печати">Тест1</param>
+        <param name="Размеры (Д х Ш х В), мм">Тест1</param>
+        <param name="Вес (кг)">Тест1</param>
+        <param name="Характеристики дисплея">Тест1</param>
+        <param name="Комплект поставки">Тест1</param>
+        <param name="Вес в упаковке">Тест1</param>
+        <param name="Страна-производитель товара">Албания</param>
+        <param name="Ширина в упаковке (см)">Тест1</param>
+        <param name="Диаметр сопла">Тест1</param>
+        <param name="Продавец гарантирует упаковку">Тест1</param>
+        <param name="Страна регистрации бренда">Албания</param>
+        <param name="Материал для печати">Flex-пластик</param>
+        <param name="Возраст">Тест1</param>
+        <param name="Глубина в упаковке (см)">Тест1</param>
+        <param name="УКТЗЕД">Тест1</param>
+        <param name="Толщина слоя">Тест1</param>
+        <param name="Область построения">Тест1</param>
+        <param name="EAN">Тест1</param>
+        <param name="Гарантия">1 месяц</param>
+        <param name="Количество печатающих головок">2</param>
+        <param name="Количество грузовых мест">13</param>
+        <param name="Тип">3D-принтеры-сканеры</param>
+        <param name="Количество единиц">Тест1</param>
+        <param name="Артикул">2981877</param>
+      </offer>
+      <offer id="4444" available="true">
+        <categoryId>4444</categoryId>
+        <category>Манежи детские</category>
+        <stock_quantity>500</stock_quantity>
+        <url>https://it-baza.com.ua/p961948949-zaschitnoe-steklo-artis.html</url>
+        <price>108.00</price>
+        <price_old>999.00</price_old>
+        <currencyId>UAH</currencyId>
+        <picture>https://my.foks.biz/i/3113c13e6e0724eedf33fd91a969a61d.jpeg</picture>
+        <picture>https://my.foks.biz/i/3113c13e6e0724eedf33fd91a969a61d.jpeg</picture>
+        <picture>https://my.foks.biz/i/3113c13e6e0724eedf33fd91a969a61d.jpeg</picture>
+        <vendor>Artis</vendor>
+        <name>Parent product test</name>
+        <description><![CDATA[<p>Защитное стекло Artis 2.5D CP+ на весь экран для Huawei Mate 10</p>
+
+<p><strong>Особенности:</strong></p>
+
+<ul>
+	<li>Изготовлено из закаленного стекла;</li>
+	<li>Высокий коэффициент пропускания;</li>
+	<li>Статический способ поклейки;твердость 9Н;</li>
+	<li>Полностью закрывает края смарфтона;</li>
+	<li>Закругленные по технологии 2,5D края;</li>
+	<li>Не искажает цветопередачу;</li>
+</ul>]]></description>
+        <param name="Детский возраст">1 год</param>
+        <param name="Количество единиц для пересчета">Тест1</param>
+        <param name="Системные требования">Тест1</param>
+        <param name="Диаметр нити">1.75 мм</param>
+        <param name="Скорость печати">Тест1</param>
+        <param name="Технология печати">стереолитография (SLA) / Цифровая светодиодная проекция (DLP)</param>
+        <param name="Програмное обеспечение">Тест1</param>
+        <param name="Размеры">Тест1</param>
+        <param name="Количество цветов печати">3</param>
+        <param name="Цвет">Черный</param>
+        <param name="Дополнительные характеристики">Тест1</param>
+        <param name="Дисплей">Тест1</param>
+        <param name="Интерфейсы">LAN</param>
+        <param name="Высота в упаковке (см)">Тест1</param>
+        <param name="Дополнительный текст">Тест1</param>
+        <param name="Качество печати">Тест1</param>
+        <param name="Размеры (Д х Ш х В), мм">Тест1</param>
+        <param name="Вес (кг)">Тест1</param>
+        <param name="Характеристики дисплея">Тест1</param>
+        <param name="Комплект поставки">Тест1</param>
+        <param name="Вес в упаковке">Тест1</param>
+        <param name="Страна-производитель товара">Албания</param>
+        <param name="Ширина в упаковке (см)">Тест1</param>
+        <param name="Диаметр сопла">Тест1</param>
+        <param name="Продавец гарантирует упаковку">Тест1</param>
+        <param name="Страна регистрации бренда">Албания</param>
+        <param name="Материал для печати">Flex-пластик</param>
+        <param name="Возраст">Тест1</param>
+        <param name="Глубина в упаковке (см)">Тест1</param>
+        <param name="УКТЗЕД">Тест1</param>
+        <param name="Толщина слоя">Тест1</param>
+        <param name="Область построения">Тест1</param>
+        <param name="EAN">Тест1</param>
+        <param name="Гарантия">1 месяц</param>
+        <param name="Количество печатающих головок">2</param>
+        <param name="Количество грузовых мест">13</param>
+        <param name="Тип">3D-принтеры-сканеры</param>
+        <param name="Количество единиц">Тест1</param>
+        <param name="Артикул">2981877</param>
+      </offer>
+    </offers>
+  </shop>
+</yml_catalog>

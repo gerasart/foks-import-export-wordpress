@@ -1,19 +1,17 @@
 <template>
   <div class="foks_settings">
     <a-col class="block_col import_block" :span="8">
-      <div class="title">Import</div>
+      <div class="title">{{text.title_import}}</div>
       <div class="import_block-link"></div>
 
       <div class="field-group">
-        <a-input v-model="Foks.import" class="import-link" placeholder="Import url"></a-input>
-        <a-button type="primary" class="import_now" @click="importFoks">Import now</a-button>
-
-        <a-progress class="field_progress" v-if="progress" :percent="percent" />
-
+        <a-input v-model="Foks.import" class="import-link" :placeholder="text.url"></a-input>
+        <a-spin class="progress" size="large" v-if="progress" />
+        <a-button v-if="!progress" type="primary" class="import_now" @click="importFoks">{{text.import}}</a-button>
       </div>
 
       <div class="field-group">
-        <div class="sub_title">Import auto update</div>
+        <div class="sub_title">{{text.update}}</div>
         <a-radio-group name="radioGroup" v-model="Foks.update">
           <a-radio value="1">
             1h
@@ -28,13 +26,13 @@
       </div>
 
       <div class="field-group">
-        <a-button type="primary" @click="save">Save</a-button>
+        <a-button type="primary" @click="save">{{text.save}}</a-button>
       </div>
 
     </a-col>
 
     <a-col class="block_col export_block" :span="8">
-      <div class="title">Export</div>
+      <div class="title">{{text.title_export}}</div>
       <div class="field-group">
         <div class="export_block-link"><a target="_blank" :href="Foks.export">{{Foks.export}}</a></div>
       </div>
@@ -44,12 +42,22 @@
 </template>
 
 <script>
+    // https://my.foks.biz/s/pb/f?key=547d2e64-c4b9-417e-bd28-3760c25409cd&type=drop_foks&ext=xml
     export default {
         name: "Settings",
         data() {
             return {
-                percent: 0,
-                progress: false
+                progress: false,
+                text: {
+                    title_import: 'Import',
+                    title_export: 'Export',
+                    success: 'Import success',
+                    save: 'Save settings',
+                    import: 'Import now',
+                    saved: 'Saved!',
+                    update: 'Import auto update',
+                    url: 'Import url'
+                },
             }
         },
         computed: {
@@ -67,8 +75,18 @@
                 const request = {
                     action: 'importFoks',
                 };
+                this.$message.config({
+                    top: '50px',
+                    duration: 2
+                });
+
+                this.progress = true;
                 this.$store.dispatch('sendRequest', request).then(res => {
-                    console.log(res);
+                    this.progress = false;
+                    if (res.data.success) {
+                        this.$message.success({content: this.text.success});
+                    }
+
                 });
             },
             save() {
@@ -81,7 +99,7 @@
                     duration: 2
                 });
                 this.$store.dispatch('sendRequest', request).then(res => {
-                    this.$message.success({content: 'Saved!'});
+                    this.$message.success({content: this.text.saved});
                 });
             }
         },
@@ -115,6 +133,11 @@
 
     .field_progress {
       margin-bottom: 20px;
+    }
+
+    .progress {
+      margin-top: 30px;
+      margin-left: 40px;
     }
 
     .export_block {

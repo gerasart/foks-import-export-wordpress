@@ -25,6 +25,7 @@
                 'orderby' => 'date',
                 'order'   => 'DESC',
                 'return'  => 'ids',
+                'status'  => 'publish'
             ];
             
             $query = new \WC_Product_Query( $args );
@@ -80,7 +81,7 @@
             $products   = self::getProducts();
             $site_url   = get_site_url();
             $site_name  = get_bloginfo( 'name' );
-            $currency = get_woocommerce_currency();
+            $currency   = get_woocommerce_currency();
 //            echo json_encode( $products );
             
             $date   = date( 'Y-m-d H:i:s' );
@@ -94,7 +95,7 @@
             $output .= '<company>' . $site_name . '</company>' . "\n";
             $output .= '<url>' . $site_url . '</url>' . "\n";
             $output .= '<currencies>' . "\n";
-            $output .= '<currency id="'.$currency.'" rate="1" />' . "\n";
+            $output .= '<currency id="' . $currency . '" rate="1" />' . "\n";
             $output .= '</currencies>' . "\n";
             if ( $categories ) :
                 $output .= '<categories>' . "\n";
@@ -113,30 +114,30 @@
                 $output .= '<categoryId>' . $product->category_id . '</categoryId>' . "\n";
                 $output .= '<stock_quantity>' . $product->quantity . '</stock_quantity>' . "\n";
                 $output .= '<url>' . $product->url . '</url>' . "\n";
-                if ((int)$product->sale_price) :
+                if ( (int)$product->sale_price ) :
                     $output .= '<price>' . $product->sale_price . '</price>' . "\n";
                     $output .= '<price_old>' . $product->price . '</price_old>' . "\n";
                 else:
                     $output .= '<price>' . $product->price . '</price>' . "\n";
                 endif;
-                $output .= '<currencyId>'.$currency.'</currencyId>' . "\n";
-                if ($product->thumb) :
+                $output .= '<currencyId>' . $currency . '</currencyId>' . "\n";
+                if ( $product->thumb ) :
                     $output .= '<picture>' . $product->thumb . '</picture>' . "\n";
                 endif;
-                if ($product->images):
-                foreach ( $product->images as $img ) {
-                    $output .= '<picture>' . $img . '</picture>' . "\n";
-                }
+                if ( $product->images ):
+                    foreach ( $product->images as $img ) {
+                        $output .= '<picture>' . $img . '</picture>' . "\n";
+                    }
                 endif;
-                if ($product->vendor) :
-                    $output .= '<vendor>'.$product->vendor.'</vendor>' . "\n";
+                if ( $product->vendor ) :
+                    $output .= '<vendor>' . $product->vendor . '</vendor>' . "\n";
                 endif;
                 $output .= '<name>' . $product->title . '</name>' . "\n";
                 $output .= '<description>' . htmlspecialchars( $product->description ) . "\n";
                 $output .= '</description>' . "\n";
-                if ($product->params):
-                    foreach ($product->params as $attr) :
-                        $output .= '<param name="'.$attr['name'].'">'.$attr['value'].'</param>' . "\n";
+                if ( $product->params ):
+                    foreach ( $product->params as $attr ) :
+                        $output .= '<param name="' . $attr['name'] . '">' . $attr['value'] . '</param>' . "\n";
                     endforeach;
                 endif;
                 $output .= '</offer>' . "\n";
