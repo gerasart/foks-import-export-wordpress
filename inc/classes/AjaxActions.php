@@ -19,6 +19,8 @@
         }
         
         public static function ajax_nopriv_importFoks() {
+            file_put_contents(FOKS_PATH.'/logs/total.json', 0);
+    
             $file = get_option( 'foks_import' );
             $data = [];
             if ( $file ) {

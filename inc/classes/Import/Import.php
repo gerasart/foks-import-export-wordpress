@@ -14,7 +14,7 @@
     use Foks\Model\ModelProduct;
     
     class Import extends ImportExport {
-    
+        
         /**
          * @param $offers
          * @return array
@@ -85,7 +85,7 @@
             }
             return $result;
         }
-    
+        
         /**
          * @param $categories
          * @return array
@@ -109,7 +109,7 @@
             
             return $categories_result;
         }
-    
+        
         /**
          * @param $categoriesList
          * @param $parent_id
@@ -132,8 +132,8 @@
             
             return $cat_name;
         }
-    
-    
+        
+        
         /**
          * @param $file
          * @return array|\SimpleXMLElement
@@ -149,13 +149,16 @@
             ];
         }
     
+        
         /**
          * @param $file
          * @return array|\SimpleXMLElement
+         * @throws \Exception
          */
         public static function importData( $file ) {
             $data = self::parseFile( $file );
-            
+            $total_product = count($data['products']);
+            file_put_contents(FOKS_PATH.'/logs/total.json', $total_product);
             $categories = ModelProduct::addCategories( $data['categories'] );
             ModelProduct::addProducts( $data['products'], $categories );
             

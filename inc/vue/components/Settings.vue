@@ -6,22 +6,17 @@
 
       <div class="field-group">
         <a-input v-model="Foks.import" class="import-link" :placeholder="text.url"></a-input>
-        <a-spin class="progress" size="large" v-if="progress" />
-        <a-button v-if="!progress" type="primary" class="import_now" @click="importFoks">{{text.import}}</a-button>
+        <a-progress class="progress" v-if="progress" :percent="progress_count" status="active" />
+        <a-button v-if="!progress" type="primary" class="import_now" @click="importFoks">{{text.import}}
+        </a-button>
       </div>
 
       <div class="field-group">
         <div class="sub_title">{{text.update}}</div>
         <a-radio-group name="radioGroup" v-model="Foks.update">
-          <a-radio value="1">
-            1h
-          </a-radio>
-          <a-radio value="4">
-            4h
-          </a-radio>
-          <a-radio value="24">
-            24h
-          </a-radio>
+          <a-radio value="1">1h</a-radio>
+          <a-radio value="4">4h</a-radio>
+          <a-radio value="24">24h</a-radio>
         </a-radio-group>
       </div>
 
@@ -42,6 +37,9 @@
 </template>
 
 <script>
+    // big
+    // https://my.foks.biz/s/pb/f?key=547d2e64-c4b9-417e-bd28-3760c25409cd&type=yml_catalog&ext=xml
+    // short
     // https://my.foks.biz/s/pb/f?key=547d2e64-c4b9-417e-bd28-3760c25409cd&type=drop_foks&ext=xml
     export default {
         name: "Settings",
@@ -58,6 +56,8 @@
                     update: 'Import auto update',
                     url: 'Import url'
                 },
+                progress_count: 0,
+                total_count: 0
             }
         },
         computed: {
@@ -86,6 +86,45 @@
                     if (res.data.success) {
                         this.$message.success({content: this.text.success});
                     }
+                }).catch(error => {
+                    this.progress = false;
+                    console.log(error);
+                    this.$message.error({content: 'Error'});
+                });
+
+                this.checkTotal();
+
+
+            },
+            checkTotal() {
+                setTimeout(() => {
+                    if (!this.total_count) {
+                        this.$store.dispatch('send', {url: this.Foks.logs_url + 'total.json'}).then(res => {
+                            console.log(res.data);
+                            this.total_count = res.data;
+                            if (!this.total_count) {
+                                this.checkTotal();
+                            } else {
+                                this.checkProgress();
+                            }
+                        }).catch(error => {
+                            if (error) {
+                                this.checkTotal();
+                            }
+                        });
+                    }
+                }, 0);
+            },
+            checkProgress() {
+                this.$store.dispatch('send', {url: this.Foks.logs_url + 'current.json'}).then(res => {
+                    let current_count = res.data;
+                    this.progress_count = (current_count / this.total_count * 100).toFixed(2);
+
+                    if (current_count !== this.total_count) {
+                        this.checkProgress();
+                    }
+
+                }).catch(error => {
 
                 });
             },

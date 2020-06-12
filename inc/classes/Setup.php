@@ -10,7 +10,10 @@
     
     use Foks\Export\Export;
     use Foks\Traits\LocalVars;
-    
+
+    ini_set( 'memory_limit', '1024M' );
+
+
     class Setup {
         
         use LocalVars;
@@ -24,6 +27,8 @@
          */
         public function __construct() {
             if ( FOKS_PAGE === 'page=' . FOKS_NAME ) {
+                file_put_contents(FOKS_PATH.'/logs/total.json', 0);
+    
                 add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin' ) );
                 add_action( 'admin_head', array( __CLASS__, 'localAdminVars' ) );
                 add_action( 'init', [ $this, 'init' ] );
