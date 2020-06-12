@@ -11,9 +11,6 @@
     use Foks\Abstracts\ImportExport;
     use Foks\Interfaces\FoksData;
     
-    ini_set( 'memory_limit', '1024M' );
-    
-    
     class Export extends ImportExport implements FoksData {
         
         static $taxonomy = 'product_cat';
@@ -58,17 +55,20 @@
             $top_cats   = [];
             $sub_cats   = [];
             foreach ( $categories as $cat ) {
-                if ( $cat->category_parent == 0 ) {
+                if ( isset( $cat->category_parent ) && $cat->category_parent == 0 ) {
                     $top_cats[ $cat->term_id ]           = $cat;
                     $top_cats[ $cat->term_id ]->children = [];
                 } else {
-                    $sub_cats[] = $cat;
+                    if ( $cat ) {
+                        $sub_cats[] = $cat;
+                    }
                 }
             }
-            
-            foreach ( $sub_cats as $sub_cat ) {
-                if ( isset( $top_cats[ $sub_cat->category_parent ] ) ) {
-                    $top_cats[ $sub_cat->category_parent ]->children[] = ($sub_cat);
+            if ( $sub_cats ) {
+                foreach ( $sub_cats as $sub_cat ) {
+                    if ( isset( $top_cats[ $sub_cat->category_parent ] ) ) {
+                        $top_cats[ $sub_cat->category_parent ]->children[] = ($sub_cat);
+                    }
                 }
             }
             
@@ -85,6 +85,9 @@
 //            echo json_encode( $products );
             
             $date   = date( 'Y-m-d H:i:s' );
+            
+            header( "Content-Type: application/xml; charset=utf-8'" );
+    
             $output = '';
             $output .= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
             $output .= '<!DOCTYPE yml_catalog SYSTEM "shops.dtd">' . "\n";
@@ -97,7 +100,7 @@
             $output .= '<currencies>' . "\n";
             $output .= '<currency id="' . $currency . '" rate="1" />' . "\n";
             $output .= '</currencies>' . "\n";
-            if ( $categories ) :
+            if ( $categories ) {
                 $output .= '<categories>' . "\n";
                 foreach ( $categories as $item ) {
                     $output .= "\t" . '<category id="' . $item->term_id . '">' . $item->name . '</category>' . "\n";
@@ -108,44 +111,45 @@
                     }
                 }
                 $output .= '</categories>' . "\n";
-            endif;
+            }
+            $output .= '<offers>' . "\n";
             foreach ( $products as $product ) {
-                $output .= '<offer id="' . $product->id . '" available="true">' . "\n";
-                $output .= '<categoryId>' . $product->category_id . '</categoryId>' . "\n";
-                $output .= '<stock_quantity>' . $product->quantity . '</stock_quantity>' . "\n";
-                $output .= '<url>' . $product->url . '</url>' . "\n";
+                $output .= "\t" .'<offer id="' . $product->id . '" available="true">' . "\n";
+                $output .= "\t" .'<categoryId>' . $product->category_id . '</categoryId>' . "\n";
+                $output .= "\t" .'<stock_quantity>' . $product->quantity . '</stock_quantity>' . "\n";
+                $output .= "\t" .'<url>' . $product->url . '</url>' . "\n";
                 if ( (int)$product->sale_price ) :
-                    $output .= '<price>' . $product->sale_price . '</price>' . "\n";
-                    $output .= '<price_old>' . $product->price . '</price_old>' . "\n";
+                    $output .= "\t" .'<price>' . $product->sale_price . '</price>' . "\n";
+                    $output .= "\t" .'<price_old>' . $product->price . '</price_old>' . "\n";
                 else:
-                    $output .= '<price>' . $product->price . '</price>' . "\n";
+                    $output .= "\t" .'<price>' . $product->price . '</price>' . "\n";
                 endif;
-                $output .= '<currencyId>' . $currency . '</currencyId>' . "\n";
+                $output .= "\t" .'<currencyId>' . $currency . '</currencyId>' . "\n";
                 if ( $product->thumb ) :
-                    $output .= '<picture>' . $product->thumb . '</picture>' . "\n";
+                    $output .= "\t" .'<picture>' . $product->thumb . '</picture>' . "\n";
                 endif;
                 if ( $product->images ):
                     foreach ( $product->images as $img ) {
-                        $output .= '<picture>' . $img . '</picture>' . "\n";
+                        $output .= "\t" .'<picture>' . $img . '</picture>' . "\n";
                     }
                 endif;
                 if ( $product->vendor ) :
-                    $output .= '<vendor>' . $product->vendor . '</vendor>' . "\n";
+                    $output .= "\t" .'<vendor>' . $product->vendor . '</vendor>' . "\n";
                 endif;
-                $output .= '<name>' . $product->title . '</name>' . "\n";
-                $output .= '<description>' . htmlspecialchars( $product->description ) . "\n";
-                $output .= '</description>' . "\n";
+                $output .= "\t" .'<name>' . $product->title . '</name>' . "\n";
+                $output .= "\t" .'<description>' . htmlspecialchars( $product->description ) . "\n";
+                $output .= "\t" .'</description>' . "\n";
                 if ( $product->params ):
                     foreach ( $product->params as $attr ) :
-                        $output .= '<param name="' . $attr['name'] . '">' . $attr['value'] . '</param>' . "\n";
+                        $output .= "\t" .'<param name="' . $attr['name'] . '">' . $attr['value'] . '</param>' . "\n";
                     endforeach;
                 endif;
-                $output .= '</offer>' . "\n";
+                $output .= "\t" .'</offer>' . "\n";
             }
+            $output .= '</offers>' . "\n";
             $output .= '</shop>' . "\n";
             $output .= '</yml_catalog>';
             
-            header( "Content-Type: application/xml; charset=utf-8'" );
             echo $output;
             
         }

@@ -1,7 +1,11 @@
 <?php
 /*
  * Plugin Name: FoksImportExport
+<<<<<<< HEAD
  * Version: 1.6
+=======
+ * Version: 1.7
+>>>>>>> ce53e7a... new version with progress bar
  * Plugin URI: https://#
  * Description: Import Export Integraton.
  * Author: Gerasart

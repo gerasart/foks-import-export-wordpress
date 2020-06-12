@@ -16,7 +16,8 @@
             self::$admin_vars['foks'] = [
                 'import' => $import ? $import : '',
                 'update' => $update ? $update : '1',
-                'export' => get_site_url().'/wp-json/foks/foksExport'
+                'export' => get_site_url().'/wp-json/foks/foksExport',
+                'logs_url' => FOKS_URL.'logs/'
             ];
         }
         

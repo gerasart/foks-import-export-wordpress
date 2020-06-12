@@ -74,9 +74,10 @@
          * @throws \Exception
          */
         public static function addProducts( $products, $categories ) {
-            
+            $i=0;
             foreach ( $products as $product ) {
-                
+                $i++;
+                file_put_contents(FOKS_PATH.'/logs/current.json', $i);
                 $post = array(
                     'post_content' => $product['description'],
                     'post_status'  => "pending",
@@ -162,21 +163,23 @@
          * @throws \Exception
          */
         public static function addImages( $product_id, $images ) {
-            $id = ImageUploader::get_attachment_id_from_url( $images[0], $product_id );
-            
-            update_post_meta( $product_id, '_thumbnail_id', $id );
-            
-            if ( isset( $images[1] ) ) {
-                $i                   = 0;
-                $updated_gallery_ids = [];
-                foreach ( $images as $img ) {
-                    $i++;
-                    if ( $i > 1 ) {
-                        $updated_gallery_ids[] = ImageUploader::get_attachment_id_from_url( $img, $product_id );
-                    }
-                }
+            if ( isset( $images[0] ) ) {
+                $id = ImageUploader::get_attachment_id_from_url( $images[0], $product_id );
                 
-                update_post_meta( $product_id, '_product_image_gallery', implode( ',', $updated_gallery_ids ) );
+                update_post_meta( $product_id, '_thumbnail_id', $id );
+                
+                if ( isset( $images[1] ) ) {
+                    $i                   = 0;
+                    $updated_gallery_ids = [];
+                    foreach ( $images as $img ) {
+                        $i++;
+                        if ( $i > 1 ) {
+                            $updated_gallery_ids[] = ImageUploader::get_attachment_id_from_url( $img, $product_id );
+                        }
+                    }
+                    
+                    update_post_meta( $product_id, '_product_image_gallery', implode( ',', $updated_gallery_ids ) );
+                }
             }
             
             
