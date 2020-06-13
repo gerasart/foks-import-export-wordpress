@@ -6,6 +6,9 @@
 
       <div class="field-group">
         <a-input v-model="Foks.import" class="import-link" :placeholder="text.url"></a-input>
+        <div v-if="total_count">Total products: <strong>{{total_count}}</strong></div>
+        <div v-else>Waiting for total products...</div>
+        <div v-if="current_count">Loaded products: <strong>{{current_count}}</strong></div>
         <a-progress class="progress" v-if="progress" :percent="progress_count" status="active" />
         <a-button v-if="!progress" type="primary" class="import_now" @click="importFoks">{{text.import}}
         </a-button>
@@ -57,6 +60,7 @@
                     url: 'Import url'
                 },
                 progress_count: 0,
+                current_count: 0,
                 total_count: 0,
                 error: false,
                 products_error: ''
@@ -99,29 +103,28 @@
 
             },
             checkTotal() {
-                setTimeout(() => {
-                    if (!this.total_count) {
-                        this.$store.dispatch('get', {url: this.Foks.logs_url + 'total.json'}).then(res => {
-                            console.log(res.data);
-                            this.total_count = res.data;
-                            if (!this.total_count && !this.error) {
-                                this.checkTotal();
-                            } else {
-                                if (!this.error) {
-                                    this.checkProgress();
-                                }
+                if (!this.total_count) {
+                    this.$store.dispatch('get', {url: this.Foks.logs_url + 'total.json'}).then(res => {
+                        console.log(res.data);
+                        this.total_count = res.data;
+                        if (!this.total_count && !this.error) {
+                            this.checkTotal();
+                        } else {
+                            if (!this.error) {
+                                this.checkProgress();
                             }
-                        }).catch(error => {
-                            if (error) {
-                                this.checkTotal();
-                            }
-                        });
-                    }
-                }, 0);
+                        }
+                    }).catch(error => {
+                        if (error) {
+                            this.checkTotal();
+                        }
+                    });
+                }
             },
             checkProgress() {
                 this.$store.dispatch('get', {url: this.Foks.logs_url + 'current.json'}).then(res => {
                     let current_count = res.data;
+                    this.current_count = res.data;
                     this.progress_count = (current_count / this.total_count * 100);
 
                     if (current_count !== this.total_count && !this.error) {
