@@ -38,6 +38,9 @@ export default new Vuex.Store({
         return axios.post(requestBody.url);
       }
     },
+    get({state}, requestBody) {
+      return axios.get(requestBody.url);
+    },
     sendApi({state}, requestBody, url) {
       return axios.post(url, qs.stringify(requestBody));
     },

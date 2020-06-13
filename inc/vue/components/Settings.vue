@@ -100,7 +100,7 @@
             checkTotal() {
                 setTimeout(() => {
                     if (!this.total_count) {
-                        this.$store.dispatch('send', {url: this.Foks.logs_url + 'total.json'}).then(res => {
+                        this.$store.dispatch('get', {url: this.Foks.logs_url + 'total.json'}).then(res => {
                             console.log(res.data);
                             this.total_count = res.data;
                             if (!this.total_count) {
@@ -117,9 +117,9 @@
                 }, 0);
             },
             checkProgress() {
-                this.$store.dispatch('send', {url: this.Foks.logs_url + 'current.json'}).then(res => {
+                this.$store.dispatch('get', {url: this.Foks.logs_url + 'current.json'}).then(res => {
                     let current_count = res.data;
-                    this.progress_count = (current_count / this.total_count * 100).toFixed(2);
+                    this.progress_count = (current_count / this.total_count * 100);
 
                     if (current_count !== this.total_count) {
                         this.checkProgress();
