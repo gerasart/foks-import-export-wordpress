@@ -6,10 +6,12 @@
 
       <div class="field-group">
         <a-input v-model="Foks.import" class="import-link" :placeholder="text.url"></a-input>
-        <div v-if="total_count">Total products: <strong>{{total_count}}</strong></div>
-        <div v-else>Waiting for total products...</div>
-        <div v-if="current_count">Loaded products: <strong>{{current_count}}</strong></div>
-        <a-progress class="progress" v-if="progress" :percent="progress_count" status="active" />
+        <div class="statistic" v-if="progress">
+          <div v-if="total_count">Total products: <strong>{{total_count}}</strong></div>
+          <div v-else>Waiting for total products...</div>
+          <div v-if="current_count">Loaded products: <strong>{{current_count}}</strong></div>
+        </div>
+        <a-progress class="progress" v-if="progress" :percent="progress_count.topFixed(2)" status="active" />
         <a-button v-if="!progress" type="primary" class="import_now" @click="importFoks">{{text.import}}
         </a-button>
       </div>
@@ -154,6 +156,11 @@
 
 <style lang="scss" scoped>
   .foks_settings {
+
+    .statistic {
+      margin-top: 30px;
+    }
+
     .block_col {
       padding: 30px;
 
@@ -194,4 +201,5 @@
       }
     }
   }
+
 </style>
