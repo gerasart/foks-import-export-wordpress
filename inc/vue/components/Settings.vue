@@ -57,7 +57,8 @@
                     url: 'Import url'
                 },
                 progress_count: 0,
-                total_count: 0
+                total_count: 0,
+                error: false
             }
         },
         computed: {
@@ -88,13 +89,13 @@
                     }
                 }).catch(error => {
                     this.progress = false;
+                    this.error = true;
                     console.log(error);
                     this.$message.error({content: 'Error'});
                 });
-
-                this.checkTotal();
-
-
+                if (!this.error) {
+                    this.checkTotal();
+                }
             },
             checkTotal() {
                 setTimeout(() => {
