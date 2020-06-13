@@ -58,7 +58,8 @@
                 },
                 progress_count: 0,
                 total_count: 0,
-                error: false
+                error: false,
+                products_error: ''
             }
         },
         computed: {
@@ -93,9 +94,9 @@
                     console.log(error);
                     this.$message.error({content: 'Error'});
                 });
-                if (!this.error) {
-                    this.checkTotal();
-                }
+
+                this.checkTotal();
+
             },
             checkTotal() {
                 setTimeout(() => {
@@ -103,10 +104,12 @@
                         this.$store.dispatch('get', {url: this.Foks.logs_url + 'total.json'}).then(res => {
                             console.log(res.data);
                             this.total_count = res.data;
-                            if (!this.total_count) {
+                            if (!this.total_count && !this.error) {
                                 this.checkTotal();
                             } else {
-                                this.checkProgress();
+                                if (!this.error) {
+                                    this.checkProgress();
+                                }
                             }
                         }).catch(error => {
                             if (error) {
@@ -121,12 +124,12 @@
                     let current_count = res.data;
                     this.progress_count = (current_count / this.total_count * 100);
 
-                    if (current_count !== this.total_count) {
+                    if (current_count !== this.total_count && !this.error) {
                         this.checkProgress();
                     }
 
                 }).catch(error => {
-
+                    console.log(error);
                 });
             },
             save() {
