@@ -6,12 +6,12 @@
 
       <div class="field-group">
         <a-input v-model="Foks.import" class="import-link" :placeholder="text.url"></a-input>
-        <div class="statistic" v-if="progress">
+        <div class="statistic">
           <div v-if="total_count">Total products: <strong>{{total_count}}</strong></div>
-          <div v-else>Waiting for total products...</div>
+          <div v-else-if="progress">Waiting for total products... <a-spin /></div>
           <div v-if="current_count">Loaded products: <strong>{{current_count}}</strong></div>
         </div>
-        <a-progress class="progress" v-if="progress" :percent="progress_count.topFixed(2)" status="active" />
+        <a-progress class="progress" v-if="progress_count" :percent="+progress_count.toFixed(2)" status="active" />
         <a-button v-if="!progress" type="primary" class="import_now" @click="importFoks">{{text.import}}
         </a-button>
       </div>
@@ -26,7 +26,14 @@
       </div>
 
       <div class="field-group">
-        <a-button type="primary" @click="save">{{text.save}}</a-button>
+        <div class="sub_title">{{text.img}}</div>
+        <a-checkbox v-model="Foks.img">
+          on/off
+        </a-checkbox>
+      </div>
+
+      <div class="field-group">
+        <a-button type="primary" @click="saveSettings">{{text.save}}</a-button>
       </div>
 
     </a-col>
@@ -59,7 +66,8 @@
                     import: 'Import now',
                     saved: 'Saved!',
                     update: 'Import auto update',
-                    url: 'Import url'
+                    url: 'Import url',
+                    img: 'Import without img'
                 },
                 progress_count: 0,
                 current_count: 0,
@@ -137,7 +145,7 @@
                     console.log(error);
                 });
             },
-            save() {
+            saveSettings() {
                 const request = {
                     action: 'saveSettings',
                     data: this.Foks
@@ -147,6 +155,7 @@
                     duration: 2
                 });
                 this.$store.dispatch('sendRequest', request).then(res => {
+                    console.log(res);
                     this.$message.success({content: this.text.saved});
                 });
             }
