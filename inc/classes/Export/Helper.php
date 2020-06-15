@@ -32,9 +32,13 @@
                 foreach ( $attributes as $item ) {
                     $attr_data[] = [
                         'name'  => $item->get_name(),
-                        'value' => $item->get_options()[0]
+                        'value' => implode(', ',$item->get_options()),
+                        'terms' => $item->get_terms(),
+                        'slug' => $item->get_data()
                     ];
                 }
+//                var_dump($attr_data);
+    
             }
             return (object)[
                 'id'          => $product_id,

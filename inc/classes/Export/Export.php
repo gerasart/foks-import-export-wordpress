@@ -141,7 +141,12 @@
                 $output .= "\t" .'</description>' . "\n";
                 if ( $product->params ):
                     foreach ( $product->params as $attr ) :
-                        $output .= "\t" .'<param name="' . $attr['name'] . '">' . $attr['value'] . '</param>' . "\n";
+                        if (!$attr['terms']) {
+                            $output .= "\t" . '<param name="' . $attr['name'] . '">' . $attr['value'] . '</param>' . "\n";
+                        } else {
+                            $attr_name = wc_attribute_label($attr['name']);
+                            $output .= "\t" . '<param name="' . $attr_name . '">' . $attr['value'] . '</param>' . "\n";
+                        }
                     endforeach;
                 endif;
                 $output .= "\t" .'</offer>' . "\n";
