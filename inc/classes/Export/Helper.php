@@ -30,15 +30,23 @@
             $attr_data  = [];
             if ( $attributes ) {
                 foreach ( $attributes as $item ) {
+                    $value_names = $item->get_options();
+                    $count = count( $value_names );
+                    if ( $count > 1 && $item->get_terms()) {
+                        $value_names = [];
+                        foreach ( $item->get_terms() as $term ) {
+                            $value_names[] = $term->name;
+                        }
+                    }
                     $attr_data[] = [
                         'name'  => $item->get_name(),
-                        'value' => implode(', ',$item->get_options()),
+                        'value' => implode( ', ', $value_names ),
                         'terms' => $item->get_terms(),
-                        'slug' => $item->get_data()
+                        'slug'  => $item->get_data()
                     ];
                 }
 //                var_dump($attr_data);
-    
+            
             }
             return (object)[
                 'id'          => $product_id,
@@ -48,7 +56,7 @@
                 'images'      => $images,
                 'description' => $product->get_description(),
                 'status'      => get_post_meta( $product_id, '_stock_status', true ),
-                'category'    => isset($categories[0]) ? $categories[0] : '',
+                'category'    => isset( $categories[0] ) ? $categories[0] : '',
                 'category_id' => self::getProductID( $product_id ),
                 'price'       => $price,
                 'sale_price'  => $sale_price,
