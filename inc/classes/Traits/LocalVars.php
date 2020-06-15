@@ -19,7 +19,7 @@
                 'update'   => $update ? $update : '1',
                 'export'   => get_site_url() . '/wp-json/foks/foksExport',
                 'logs_url' => FOKS_URL . 'logs/',
-                'img'      => $img && $img === 'true' ? $img : 0
+                'img'      => $img && $img === 'true' ? (boolean)$img : false
             ];
         }
         
