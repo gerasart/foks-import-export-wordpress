@@ -32,7 +32,7 @@
                 foreach ( $attributes as $item ) {
                     $value_names = $item->get_options();
                     $count = count( $value_names );
-                    if ( $count > 1 && $item->get_terms()) {
+                    if ( $item->get_terms()) {
                         $value_names = [];
                         foreach ( $item->get_terms() as $term ) {
                             $value_names[] = $term->name;
