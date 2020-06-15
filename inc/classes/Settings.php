@@ -21,8 +21,8 @@
         
         public function settingPage() {
             add_menu_page(
-                'FoksImportExport',
-                'FoksImportExport',
+                'FOKS Import/Export',
+                'FOKS Import/Export',
                 'edit_posts',
                 FOKS_NAME,
                 [ $this, FOKS_NAME ],

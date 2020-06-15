@@ -98,6 +98,7 @@
 
                 this.progress = true;
                 this.$store.dispatch('sendRequest', request).then(res => {
+                    console.log('importFoks',res.data);
                     this.progress = false;
                     if (res.data.success) {
                         this.$message.success({content: this.text.success});
