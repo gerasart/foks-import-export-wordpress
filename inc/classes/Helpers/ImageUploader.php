@@ -134,51 +134,57 @@
                     ),
                 );
             } else {
-                // This is an external URL, so compare to source.
-                $args = array(
-                    'post_type'   => 'attachment',
-                    'post_status' => 'any',
-                    'fields'      => 'ids',
-                    'meta_query'  => array( // @codingStandardsIgnoreLine.
-                                            array(
-                                                'value' => $url,
-                                                'key'   => '_wc_attachment_source',
-                                            ),
-                    ),
-                );
-            }
-            
-            $ids = get_posts( $args ); // @codingStandardsIgnoreLine.
-            
-            if ( $ids ) {
-                $id = current( $ids );
-            }
-            
-            // Upload if attachment does not exists.
-            if ( !$id && stristr( $url, '://' ) ) {
-                $upload = wc_rest_upload_image_from_url( $url );
+//                // This is an external URL, so compare to source.
+//                $args = array(
+//                    'post_type'   => 'attachment',
+//                    'post_status' => 'any',
+//                    'fields'      => 'ids',
+//                    'meta_query'  => array( // @codingStandardsIgnoreLine.
+//                                            array(
+//                                                'value' => $url,
+//                                                'key'   => '_wc_attachment_source',
+//                                            ),
+//                    ),
+//                );
+//            }
+//
+//            $ids = get_posts( $args ); // @codingStandardsIgnoreLine.
+//
+//            if ( $ids ) {
+//                $id = current( $ids );
+//            }
                 
-                if ( is_wp_error( $upload ) ) {
-                    throw new \Exception( $upload->get_error_message(), 400 );
+                // Upload if attachment does not exists.
+                if ( !$id && stristr( $url, '://' ) ) {
+                    $upload = wc_rest_upload_image_from_url( $url );
+                    
+                    if ( is_wp_error( $upload ) ) {
+//                    throw new \Exception( $upload->get_error_message(), 400 );
+                        return $id;
+                    }
+                    
+                    $id = wc_rest_set_uploaded_image_as_attachment( $upload, $product_id );
+
+//                if ( !wp_attachment_is_image( $id ) ) {
+//                    /* translators: %s: image URL */
+//                    throw new \Exception( sprintf( __( 'Not able to attach "%s".', 'woocommerce' ), $url ), 400 );
+//                }
+                    
+                    // Save attachment source for future reference.
+                    if ( $id ) {
+                        update_post_meta( $id, '_wc_attachment_source', $url );
+                    }
                 }
                 
-                $id = wc_rest_set_uploaded_image_as_attachment( $upload, $product_id );
-                
-                if ( !wp_attachment_is_image( $id ) ) {
+                if ( !$id ) {
                     /* translators: %s: image URL */
-                    throw new \Exception( sprintf( __( 'Not able to attach "%s".', 'woocommerce' ), $url ), 400 );
+//                throw new \Exception( sprintf( __( 'Unable to use image "%s".', 'woocommerce' ), $url ), 400 );
                 }
                 
-                // Save attachment source for future reference.
-                update_post_meta( $id, '_wc_attachment_source', $url );
+                return $id;
             }
             
-            if ( !$id ) {
-                /* translators: %s: image URL */
-                throw new \Exception( sprintf( __( 'Unable to use image "%s".', 'woocommerce' ), $url ), 400 );
-            }
             
-            return $id;
         }
         
         

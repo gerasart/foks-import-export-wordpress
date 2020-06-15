@@ -74,10 +74,12 @@
          * @throws \Exception
          */
         public static function addProducts( $products, $categories ) {
-            $i=0;
+            $foks_img = get_option( 'foks_img' );
+            
+            $i = 0;
             foreach ( $products as $product ) {
                 $i++;
-                file_put_contents(FOKS_PATH.'/logs/current.json', $i);
+                file_put_contents( FOKS_PATH . '/logs/current.json', $i );
                 $post = array(
                     'post_content' => $product['description'],
                     'post_status'  => "pending",
@@ -95,7 +97,10 @@
                 }
                 
                 self::updateCategory( $product, $product_id, $categories );
-                self::addImages( $product_id, $product['images'] );
+                
+                if ( !$foks_img || $foks_img === 'false' ) {
+                    self::addImages( $product_id, $product['images'] );
+                }
                 
                 if ( !$is_product ) {
                     wp_set_object_terms( $product_id, 'simple', 'product_type' );
@@ -123,7 +128,6 @@
                 update_post_meta( $product_id, '_stock', $product['quantity'] );
                 
             }
-            return true;
         }
         
         
@@ -174,7 +178,9 @@
                     foreach ( $images as $img ) {
                         $i++;
                         if ( $i > 1 ) {
-                            $updated_gallery_ids[] = ImageUploader::get_attachment_id_from_url( $img, $product_id );
+                            if ( $img ) {
+                                $updated_gallery_ids[] = ImageUploader::get_attachment_id_from_url( $img, $product_id );
+                            }
                         }
                     }
                     

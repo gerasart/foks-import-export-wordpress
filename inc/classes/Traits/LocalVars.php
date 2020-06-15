@@ -12,12 +12,14 @@
         public function viewData() {
             $import = get_option( 'foks_import' );
             $update = get_option( 'foks_update' );
+            $img    = get_option( 'foks_img' );
             
             self::$admin_vars['foks'] = [
-                'import' => $import ? $import : '',
-                'update' => $update ? $update : '1',
-                'export' => get_site_url().'/wp-json/foks/foksExport',
-                'logs_url' => FOKS_URL.'logs/'
+                'import'   => $import ? $import : '',
+                'update'   => $update ? $update : '1',
+                'export'   => get_site_url() . '/wp-json/foks/foksExport',
+                'logs_url' => FOKS_URL . 'logs/',
+                'img'      => $img && $img === 'true' ? $img : 0
             ];
         }
         
