@@ -44,24 +44,23 @@
                         'slug'  => $item->get_data()
                     ];
                 }
-//                var_dump($attr_data);
             
             }
             return (object)[
                 'id'          => $product_id,
                 'title'       => html_entity_decode( get_the_title( $product_id ) ),
                 'url'         => get_the_permalink( $product_id ),
-                'thumb'       => $thumb,
-                'images'      => $images,
+                'thumb'       => $thumb ? $thumb : '',
+                'images'      => $images ? $images : [],
                 'description' => $product->get_description(),
                 'status'      => get_post_meta( $product_id, '_stock_status', true ),
                 'category'    => isset( $categories[0] ) ? $categories[0] : '',
                 'category_id' => self::getProductID( $product_id ),
-                'price'       => $price,
-                'sale_price'  => $sale_price,
+                'price'       => $price ? $price: '',
+                'sale_price'  => $sale_price ? $sale_price : '',
                 'quantity'    => $quantity ? $quantity : 999,
-                'sku'         => $sku,
-                'params'      => $attr_data,
+                'sku'         => $sku ? $sku : '',
+                'params'      => $attr_data ? $attr_data : [],
                 'vendor'      => '',
             ];
         }

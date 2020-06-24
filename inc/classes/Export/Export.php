@@ -83,13 +83,9 @@
             $site_name  = get_bloginfo( 'name' );
             $currency   = get_woocommerce_currency();
 //            echo json_encode( $products );
-            
             $date   = date( 'Y-m-d H:i:s' );
             
-            header( "Content-Type: application/xml; charset=utf-8'" );
-    
-            $output = '';
-            $output .= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
+            $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
             $output .= '<!DOCTYPE yml_catalog SYSTEM "shops.dtd">' . "\n";
             $output .= '<yml_catalog date="' . $date . '">' . "\n";
             $output .= '<shop>' . "\n";
@@ -114,48 +110,53 @@
             }
             $output .= '<offers>' . "\n";
             foreach ( $products as $product ) {
-                $output .= "\t" .'<offer id="' . $product->id . '" available="true">' . "\n";
-                $output .= "\t" .'<categoryId>' . $product->category_id . '</categoryId>' . "\n";
-                $output .= "\t" .'<stock_quantity>' . $product->quantity . '</stock_quantity>' . "\n";
-                $output .= "\t" .'<url>' . $product->url . '</url>' . "\n";
-                if ( (int)$product->sale_price ) :
-                    $output .= "\t" .'<price>' . $product->sale_price . '</price>' . "\n";
-                    $output .= "\t" .'<price_old>' . $product->price . '</price_old>' . "\n";
-                else:
-                    $output .= "\t" .'<price>' . $product->price . '</price>' . "\n";
-                endif;
-                $output .= "\t" .'<currencyId>' . $currency . '</currencyId>' . "\n";
-                if ( $product->thumb ) :
-                    $output .= "\t" .'<picture>' . $product->thumb . '</picture>' . "\n";
-                endif;
-                if ( $product->images ):
-                    foreach ( $product->images as $img ) {
-                        $output .= "\t" .'<picture>' . $img . '</picture>' . "\n";
-                    }
-                endif;
-                if ( $product->vendor ) :
-                    $output .= "\t" .'<vendor>' . $product->vendor . '</vendor>' . "\n";
-                endif;
-                $output .= "\t" .'<name>' . $product->title . '</name>' . "\n";
-                $output .= "\t" .'<description>' . htmlspecialchars( $product->description ) . "\n";
-                $output .= "\t" .'</description>' . "\n";
-                if ( $product->params ):
-                    foreach ( $product->params as $attr ) :
-                        if (!$attr['terms']) {
-                            $output .= "\t" . '<param name="' . $attr['name'] . '">' . $attr['value'] . '</param>' . "\n";
-                        } else {
-                            $attr_name = wc_attribute_label($attr['name']);
-                            $output .= "\t" . '<param name="' . $attr_name . '">' . $attr['value'] . '</param>' . "\n";
+                if ($product) {
+                    $output .= "\t" . '<offer id="' . $product->id . '" available="true">' . "\n";
+                    $output .= "\t" . '<categoryId>' . $product->category_id . '</categoryId>' . "\n";
+                    $output .= "\t" . '<stock_quantity>' . $product->quantity . '</stock_quantity>' . "\n";
+                    $output .= "\t" . '<url>' . $product->url . '</url>' . "\n";
+                    if ( (int)$product->sale_price ) :
+                        $output .= "\t" . '<price>' . $product->sale_price . '</price>' . "\n";
+                        $output .= "\t" . '<price_old>' . $product->price . '</price_old>' . "\n";
+                    else:
+                        $output .= "\t" . '<price>' . $product->price . '</price>' . "\n";
+                    endif;
+                    $output .= "\t" . '<currencyId>' . $currency . '</currencyId>' . "\n";
+                    if ( $product->thumb ) :
+                        $output .= "\t" . '<picture>' . $product->thumb . '</picture>' . "\n";
+                    endif;
+                    if ( $product->images ):
+                        foreach ( $product->images as $img ) {
+                            $output .= "\t" . '<picture>' . $img . '</picture>' . "\n";
                         }
-                    endforeach;
-                endif;
-                $output .= "\t" .'</offer>' . "\n";
+                    endif;
+                    if ( $product->vendor ) :
+                        $output .= "\t" . '<vendor>' . $product->vendor . '</vendor>' . "\n";
+                    endif;
+                    $output .= "\t" . '<name>' . $product->title . '</name>' . "\n";
+                    $output .= "\t" . '<description>' . htmlspecialchars( $product->description ) . "\n";
+                    $output .= "\t" . '</description>' . "\n";
+                    if ( $product->params ):
+                        foreach ( $product->params as $attr ) :
+                            if ( !$attr['terms'] ) {
+                                $output .= "\t" . '<param name="' . $attr['name'] . '">' . $attr['value'] . '</param>' . "\n";
+                            } else {
+                                $attr_name = wc_attribute_label( $attr['name'] );
+                                $output    .= "\t" . '<param name="' . $attr_name . '">' . $attr['value'] . '</param>' . "\n";
+                            }
+                        endforeach;
+                    endif;
+                    $output .= "\t" . '</offer>' . "\n";
+                }
             }
             $output .= '</offers>' . "\n";
             $output .= '</shop>' . "\n";
             $output .= '</yml_catalog>';
-            
+    
+            header( "Content-Type: application/xml; charset=utf-8" );
+    
             echo $output;
+    
             
         }
         
