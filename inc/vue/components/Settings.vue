@@ -8,7 +8,9 @@
         <a-input v-model="Foks.import" class="import-link" :placeholder="text.url"></a-input>
         <div class="statistic">
           <div v-if="total_count">Total products: <strong>{{total_count}}</strong></div>
-          <div v-else-if="progress">Waiting for total products... <a-spin /></div>
+          <div v-else-if="progress">Waiting for total products...
+            <a-spin />
+          </div>
           <div v-if="current_count">Loaded products: <strong>{{current_count}}</strong></div>
         </div>
         <a-progress class="progress" v-if="progress_count" :percent="+progress_count.toFixed(2)" status="active" />
@@ -33,7 +35,7 @@
       </div>
 
       <div class="field-group">
-        <a-button type="primary" @click="saveSettings">{{text.save}}</a-button>
+        <a-button class="save_settings" type="primary" @click="saveSettings">{{text.save}}</a-button>
       </div>
 
     </a-col>
@@ -41,9 +43,13 @@
     <a-col class="block_col export_block" :span="12">
       <div class="title">{{text.title_export}}</div>
       <div class="field-group">
-        <a-button :data-url="Foks.export" type="primary" @click="ExportFoks">{{text.export_now}}</a-button>
+        <div v-if="!export_spin" class="export_block-link stable">Stable xml: <a target="_blank" :href="Foks.logs_url+text.export">{{Foks.logs_url}}{{text.export}}</a>
+        </div>
+        <a-spin v-else />
         <hr>
-        <div class="export_block-link stable">Stable xml: <a target="_blank" :href="Foks.logs_url+text.export">{{Foks.logs_url}}{{text.export}}</a></div>
+        <a-button v-if="!export_spin" :data-url="Foks.export" type="primary" @click="ExportFoks">{{text.export_now}}
+        </a-button>
+        <a-spin v-else />
       </div>
     </a-col>
 
@@ -77,6 +83,7 @@
                 current_count: 0,
                 total_count: 0,
                 error: false,
+                export_spin: false,
                 products_error: ''
             }
         },
@@ -92,10 +99,13 @@
         },
         methods: {
             ExportFoks() {
+                this.export_spin = true;
                 this.$store.dispatch('get', {url: this.Foks.export}).then(res => {
                     console.log(res);
+                    this.export_spin = false;
                 }).catch(error => {
                     console.log(error);
+                    this.export_spin = false;
                 });
             },
             importFoks() {
@@ -109,7 +119,7 @@
 
                 this.progress = true;
                 this.$store.dispatch('sendRequest', request).then(res => {
-                    console.log('importFoks',res.data);
+                    console.log('importFoks', res.data);
                     this.progress = false;
                     if (res.data.success) {
                         this.$message.success({content: this.text.success});
@@ -180,6 +190,15 @@
 
     .statistic {
       margin-top: 30px;
+    }
+
+    .save_settings {
+      background: rgb(116, 187, 90);
+      border: 1px solid;
+
+      &:hover {
+        opacity: .8;
+      }
     }
 
     .block_col {
