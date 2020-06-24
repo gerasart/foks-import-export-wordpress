@@ -38,10 +38,12 @@
 
     </a-col>
 
-    <a-col class="block_col export_block" :span="8">
+    <a-col class="block_col export_block" :span="12">
       <div class="title">{{text.title_export}}</div>
       <div class="field-group">
-        <div class="export_block-link"><a target="_blank" :href="Foks.export">{{Foks.export}}</a></div>
+        <div class="export_block-link">Server render url: <a target="_blank" :href="Foks.export">{{Foks.export}}</a></div>
+        <hr>
+        <div class="export_block-link stable">Stable xml: <a target="_blank" :href="Foks.logs_url+text.export">{{text.export}}</a></div>
       </div>
     </a-col>
 
@@ -65,9 +67,10 @@
                     save: 'Save settings',
                     import: 'Import now',
                     saved: 'Saved!',
-                    update: 'Import auto update',
+                    update: 'Import/Export auto update',
                     url: 'Import url',
-                    img: 'Import without img'
+                    img: 'Import without img',
+                    export: 'foks_export.xml'
                 },
                 progress_count: 0,
                 current_count: 0,

@@ -82,16 +82,17 @@
             $site_url   = get_site_url();
             $site_name  = get_bloginfo( 'name' );
             $currency   = get_woocommerce_currency();
-//            echo json_encode( $products );
-            $date   = date( 'Y-m-d H:i:s' );
+            
+            $date = date( 'Y-m-d H:i:s' );
             
             $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
             $output .= '<!DOCTYPE yml_catalog SYSTEM "shops.dtd">' . "\n";
             $output .= '<yml_catalog date="' . $date . '">' . "\n";
             $output .= '<shop>' . "\n";
-            
-            $output .= '<name>' . $site_name . '</name>' . "\n";
-            $output .= '<company>' . $site_name . '</company>' . "\n";
+            if ( $site_name ) {
+                $output .= '<name>' . $site_name . '</name>' . "\n";
+                $output .= '<company>' . $site_name . '</company>' . "\n";
+            }
             $output .= '<url>' . $site_url . '</url>' . "\n";
             $output .= '<currencies>' . "\n";
             $output .= '<currency id="' . $currency . '" rate="1" />' . "\n";
@@ -110,7 +111,7 @@
             }
             $output .= '<offers>' . "\n";
             foreach ( $products as $product ) {
-                if ($product) {
+                if ( $product ) {
                     $output .= "\t" . '<offer id="' . $product->id . '" available="true">' . "\n";
                     $output .= "\t" . '<categoryId>' . $product->category_id . '</categoryId>' . "\n";
                     $output .= "\t" . '<stock_quantity>' . $product->quantity . '</stock_quantity>' . "\n";
@@ -153,10 +154,11 @@
             $output .= '</shop>' . "\n";
             $output .= '</yml_catalog>';
     
+            file_put_contents( FOKS_PATH . '/logs/foks_export.xml', $output );
+    
             header( "Content-Type: application/xml; charset=utf-8" );
     
             echo $output;
-    
             
         }
         
