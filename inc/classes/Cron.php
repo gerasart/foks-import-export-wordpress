@@ -9,6 +9,7 @@
     namespace Foks;
     
     
+    use Foks\Export\Export;
     use Foks\Import\Import;
     
     class Cron {
@@ -81,7 +82,10 @@
                 }
             }
         }
-        
+    
+        /**
+         * @throws \Exception
+         */
         public static function action_ImportProducts() {
             $file = get_option( 'foks_import' );
             if ( $file ) {
@@ -89,6 +93,7 @@
                 file_put_contents( FOKS_PATH . '/logs/foks_import.xml', $xml );
                 $file_path = FOKS_URL . '/logs/foks_import.xml';
                 Import::importData( $file_path );
+                Export::generateXML();
             }
         }
         

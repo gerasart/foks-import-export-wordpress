@@ -67,7 +67,7 @@
                     save: 'Save settings',
                     import: 'Import now',
                     saved: 'Saved!',
-                    update: 'Import auto update',
+                    update: 'Import/Export auto update',
                     url: 'Import url',
                     img: 'Import without img',
                     export: 'foks_export.xml'
