@@ -41,9 +41,9 @@
     <a-col class="block_col export_block" :span="12">
       <div class="title">{{text.title_export}}</div>
       <div class="field-group">
-        <div class="export_block-link">Server render url: <a target="_blank" :href="Foks.export">{{Foks.export}}</a></div>
+        <a-button :data-url="Foks.export" type="primary" @click="ExportFoks">{{text.export_now}}</a-button>
         <hr>
-        <div class="export_block-link stable">Stable xml: <a target="_blank" :href="Foks.logs_url+text.export">{{text.export}}</a></div>
+        <div class="export_block-link stable">Stable xml: <a target="_blank" :href="Foks.logs_url+text.export">{{Foks.logs_url}}{{text.export}}</a></div>
       </div>
     </a-col>
 
@@ -66,6 +66,7 @@
                     success: 'Import success',
                     save: 'Save settings',
                     import: 'Import now',
+                    export_now: 'Export now',
                     saved: 'Saved!',
                     update: 'Import/Export auto update',
                     url: 'Import url',
@@ -90,6 +91,13 @@
             }
         },
         methods: {
+            ExportFoks() {
+                this.$store.dispatch('get', {url: this.Foks.export}).then(res => {
+                    console.log(res);
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
             importFoks() {
                 const request = {
                     action: 'importFoks',
@@ -191,10 +199,6 @@
       .field-group {
         margin-bottom: 30px;
       }
-    }
-
-    .import_now {
-      margin-top: 20px;
     }
 
     .field_progress {
