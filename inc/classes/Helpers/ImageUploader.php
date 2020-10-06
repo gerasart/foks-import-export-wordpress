@@ -153,6 +153,15 @@
 //            if ( $ids ) {
 //                $id = current( $ids );
 //            }
+                $pathinfo = pathinfo($url);
+                $title = $pathinfo['filename'];
+                // Does the attachment already exist ?
+                if( post_exists( $title ) ){
+                  $attachment = get_page_by_title( $title, OBJECT, 'attachment');
+                  if( !empty( $attachment ) ){
+                    $id = $attachment->ID;
+                  }
+                }                
                 
                 // Upload if attachment does not exists.
                 if ( !$id && stristr( $url, '://' ) ) {
