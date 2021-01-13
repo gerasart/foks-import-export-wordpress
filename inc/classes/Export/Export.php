@@ -156,7 +156,7 @@
     
             file_put_contents( FOKS_PATH . '/logs/foks_export.xml', $output );
     
-            header( "Content-Type: application/xml; charset=utf-8" );
+            //header( "Content-Type: application/xml; charset=utf-8" );
     
             echo $output;
             
@@ -166,7 +166,13 @@
             register_rest_route( 'foks', 'foksExport', array(
                 'methods'  => 'GET',
                 'callback' => __CLASS__ . '::generateXML',
+                'permission_callback' => '__return_true',
+                'args'                => array(
+					'format'   => array(
+						'default'           => 'xml',
+						'sanitize_callback' => 'wp_oembed_ensure_format',
+					),
+				),
             ) );
         }
-        
     }
