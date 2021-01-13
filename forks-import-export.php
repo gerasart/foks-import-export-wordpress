@@ -75,6 +75,6 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 __FILE__,
 'forks-import-export'
 );
-$myUpdateChecker->setAuthentication('6539d3f6b6df3db249de160e713aaa5301d80262');
+$myUpdateChecker->setAuthentication('137a212dbbd60668fdfd7845edc112914d59ff2a');
 $myUpdateChecker->setBranch('master');
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
