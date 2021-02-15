@@ -8,13 +8,12 @@
     
     namespace Foks\Import;
     
-    
     use Foks\Abstracts\ImportExport;
     use Foks\Helpers\Helpers;
     use Foks\Model\ModelProduct;
     
     class Import extends ImportExport {
-        
+
         /**
          * @param $offers
          * @return array
@@ -83,9 +82,10 @@
                 $result[ $i ] = $data;
                 
             }
+
             return $result;
         }
-        
+
         /**
          * @param $categories
          * @return array
@@ -93,6 +93,7 @@
         public static function parseCategories( $categories ) {
             $categoriesList = array();
             $data           = $categories->category;
+            
             foreach ( $data as $category ) {
                 $categoriesList[] = array(
                     'parent_id'   => (int)$category['parentId'],
@@ -109,7 +110,7 @@
             
             return $categories_result;
         }
-        
+
         /**
          * @param $categoriesList
          * @param $parent_id
@@ -132,8 +133,7 @@
             
             return $cat_name;
         }
-        
-        
+
         /**
          * @param $file
          * @return array|\SimpleXMLElement
@@ -148,8 +148,7 @@
                 'categories' => self::parseCategories( $xml->shop->categories )
             ];
         }
-    
-        
+
         /**
          * @param $file
          * @return array|\SimpleXMLElement
