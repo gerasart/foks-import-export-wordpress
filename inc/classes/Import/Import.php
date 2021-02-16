@@ -51,7 +51,7 @@
                     'model'          => (!empty( $offer->vendorCode )) ? (string)$offer->vendorCode : (string)$offer['id'],
                     'thumb'          => $product_images[0],
                     'sku'            => (!empty( $offer->vendorCode )) ? (string)$offer->vendorCode : (string)$offer['id'],
-                    'quantity'       => (isset( $offer->outlets->outlet['instock'] )) ? (int)$offer->outlets->outlet['instock'] : '999',
+                    'quantity'       => (isset( $offer->stock_quantity )) ? (int)$offer->stock_quantity : 0,
                     //                    'stock_status_id'     => ($offer['available'] == 'true') ? 7 : 8,
                     'date_available' => date( 'Y-m-d' ),
                     'price'          => (float)$offer->price,
