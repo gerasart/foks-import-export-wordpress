@@ -41,12 +41,10 @@
                 }
                 
                 $product_description = (string)$offer->description;
-                
                 $id_category = (int)$offer->categoryId;
-                
                 $data = array(
                     'foks_id'        => (string)$offer['id'],
-                    'name'           => $offer->name,
+                    'name'           => $productName,
                     'description'    => $product_description,
                     'category'       => $id_category,
                     'model'          => (!empty( $offer->vendorCode )) ? (string)$offer->vendorCode : (string)$offer['id'],
@@ -62,7 +60,6 @@
                     'attributes'     => [],
                     'manufacturer'   => ''
                 );
-                
                 if ( isset( $offer->vendor ) ) {
                     $data['manufacturer'] = (string)$offer->vendor;
                 }
@@ -160,6 +157,7 @@
             $total_product = count($data['products']);
             file_put_contents(FOKS_PATH.'/logs/total.json', $total_product);
             $categories = ModelProduct::addCategories( $data['categories'] );
+
             ModelProduct::addProducts( $data['products'], $categories );
             
             return $data;
