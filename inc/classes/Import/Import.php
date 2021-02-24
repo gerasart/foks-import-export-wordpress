@@ -46,7 +46,7 @@
                 
                 $data = array(
                     'foks_id'        => (string)$offer['id'],
-                    'name'           => $offer->id,
+                    'name'           => $offer->name,
                     'description'    => $product_description,
                     'category'       => $id_category,
                     'model'          => (!empty( $offer->vendorCode )) ? (string)$offer->vendorCode : (string)$offer['id'],
