@@ -128,7 +128,7 @@
                 update_post_meta( $product_id, '_sku', $product['model'] );
                 update_post_meta( $product_id, '_product_attributes', array() );
                 self::addAttributeGroup( $product_id, $product['attributes'] );
-                update_post_meta( $product_id, '_manage_stock', "no" );
+                update_post_meta( $product_id, '_manage_stock', !empty($product['quantity']) ? "yes" : "no" );
                 update_post_meta( $product_id, '_backorders', "no" );
                 update_post_meta( $product_id, '_stock', $product['quantity'] );
 
