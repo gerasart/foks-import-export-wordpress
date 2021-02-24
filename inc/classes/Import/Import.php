@@ -45,7 +45,8 @@
                 $id_category = (int)$offer->categoryId;
                 
                 $data = array(
-                    'name'           => $productName,
+                    'foks_id'        => (string)$offer['id'],
+                    'name'           => $offer->id,
                     'description'    => $product_description,
                     'category'       => $id_category,
                     'model'          => (!empty( $offer->vendorCode )) ? (string)$offer->vendorCode : (string)$offer['id'],
