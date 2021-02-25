@@ -118,7 +118,7 @@
 
                 update_post_meta( $product_id, '_foks_id', $product['foks_id'] );
                 update_post_meta( $product_id, '_visibility', 'visible' );
-                update_post_meta( $product_id, '_stock_status', 'instock' );
+                update_post_meta( $product_id, '_stock_status', $product['quantity'] ? 'instock' : 'outofstock' );
                 
                 if ( $product['price_old'] ) {
                     update_post_meta( $product_id, '_sale_price', $product['price'] );
