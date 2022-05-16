@@ -12,9 +12,11 @@
     }
   },
   "require-dev": {
+    "roave/security-advisories": "dev-latest",
     "haydenpierce/class-finder": "^0.2.0"
   },
   "require": {
+    "php": ">= 7.1.33",
     "cloudipsp/php-sdk-v2": "^1.0",
     "yahnis-elsts/plugin-update-checker": "^4.9"
   }
