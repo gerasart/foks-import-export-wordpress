@@ -22,31 +22,31 @@ class Cron
     }
 
     /**
-     * @param $schedules {
+     * @param $schedules
      * @return mixed
      */
     public static function cronTimes($schedules)
     {
-        $schedules['one_min'] = array(
+        $schedules['one_min'] = [
             'interval' => 60,
             'display' => 'Every 1 min'
-        );
-        $schedules['one_hour'] = array(
+        ];
+        $schedules['one_hour'] = [
             'interval' => 3600,
             'display' => 'Every 1 hour'
-        );
-        $schedules['four_hour'] = array(
+        ];
+        $schedules['four_hour'] = [
             'interval' => 14400,
             'display' => 'Every 4 hour'
-        );
-        $schedules['one_day'] = array(
+        ];
+        $schedules['one_day'] = [
             'interval' => 43200,
             'display' => 'Every 1 day'
-        );
-        $schedules['three_day'] = array(
+        ];
+        $schedules['three_day'] = [
             'interval' => 129600,
             'display' => 'Every 3 day'
-        );
+        ];
 
         return $schedules;
     }
@@ -54,6 +54,7 @@ class Cron
     public static function registration(): void
     {
         $option_time = (int)get_option('foks_update');
+
         if (!wp_next_scheduled('ImportProducts')) {
             switch ($option_time) {
                 case 1:
@@ -77,8 +78,8 @@ class Cron
     {
         $pref = 'action_';
         $class_methods = get_class_methods(get_called_class());
-        foreach ($class_methods as $name) {
 
+        foreach ($class_methods as $name) {
             $need = strpos($name, $pref);
             $short = str_replace($pref, '', $name);
 

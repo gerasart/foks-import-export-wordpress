@@ -17,14 +17,14 @@ class Product
     public const VARIATION_TYPE = 'variation';
 
     /**
-     * @param $product_id
+     * @param $productId
      * @return object
      */
-    public static function getProductById($product_id)
+    public static function getProductById($productId)
     {
-        $thumb = has_post_thumbnail($product_id) ? get_the_post_thumbnail_url($product_id, 'full') : false;
-        $categories = wp_get_post_terms($product_id, 'product_cat', ['fields' => 'names']);
-        $product = new \WC_Product($product_id);
+        $thumb = has_post_thumbnail($productId) ? get_the_post_thumbnail_url($productId, 'full') : false;
+        $categories = wp_get_post_terms($productId, 'product_cat', ['fields' => 'names']);
+        $product = new \WC_Product($productId);
         $attachment_ids = $product->get_gallery_image_ids();
         $images = [];
 
@@ -34,10 +34,10 @@ class Product
             }
         }
 
-        $price = get_post_meta($product_id, '_regular_price', true);
-        $sale_price = get_post_meta($product_id, '_sale_price', true);
-        $quantity = get_post_meta($product_id, '_stock', true);
-        $sku = get_post_meta($product_id, '_sku', true);
+        $price = get_post_meta($productId, '_regular_price', true);
+        $sale_price = get_post_meta($productId, '_sale_price', true);
+        $quantity = get_post_meta($productId, '_stock', true);
+        $sku = get_post_meta($productId, '_sku', true);
         $attributes = $product->get_attributes();
         $attr_data = [];
 
@@ -60,15 +60,15 @@ class Product
 
         }
         return (object)[
-            'id' => $product_id,
-            'title' => html_entity_decode(get_the_title($product_id)),
-            'url' => get_the_permalink($product_id),
+            'id' => $productId,
+            'title' => html_entity_decode(get_the_title($productId)),
+            'url' => get_the_permalink($productId),
             'thumb' => $thumb ?: '',
             'images' => $images ?: [],
             'description' => $product->get_description(),
-            'status' => get_post_meta($product_id, '_stock_status', true),
+            'status' => get_post_meta($productId, '_stock_status', true),
             'category' => $categories[0] ?? '',
-            'category_id' => Category::getCategoryId($product_id),
+            'category_id' => Category::getCategoryId($productId),
             'price' => $price ?: '',
             'sale_price' => $sale_price ?: '',
             'quantity' => $quantity ?: 999,
