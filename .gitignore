@@ -3,7 +3,7 @@
 # Node.js Tools
 node_modules/
 package-lock.json
-
+composer.lock
 # NBeans Project. local IDE files
 nbproject/
 
