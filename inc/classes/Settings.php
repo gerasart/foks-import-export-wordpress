@@ -3,6 +3,9 @@
  * Created by seonarnia.com.
  * User: gerasymenkoph@gmail.com
  */
+
+declare(strict_types=1);
+
 namespace Foks;
 
 class Settings

@@ -1,10 +1,10 @@
 <?php
-declare(strict_types=1);
-
 /**
  * Created by seonarnia.com.
  * User: gerasymenkoph@gmail.com
  */
+
+declare(strict_types=1);
 
 namespace Foks\Model;
 
@@ -13,9 +13,9 @@ class Translit
     /**
      * @param $title
      * @param $url
-     * @return false|string
+     * @return string
      */
-    public static function execute($title, $url = null)
+    public static function execute($title, $url = null): string
     {
         $words = [
             "Є" => "EH", "І" => "I", "і" => "i", "№" => "#", "є" => "eh",
@@ -37,7 +37,7 @@ class Translit
         ];
 
         if (!$url) {
-            return strtr($title, $words);
+            return strtr($title, $words) ?: '';
         }
 
         $title = mb_strtolower($title);

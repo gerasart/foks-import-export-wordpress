@@ -1,10 +1,10 @@
 <?php
-declare(strict_types=1);
-
 /**
  * Created by seonarnia.com.
  * User: gerasymenkoph@gmail.com
  */
+
+declare(strict_types=1);
 
 namespace Foks\Model;
 
