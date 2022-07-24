@@ -8,6 +8,16 @@ Export/Import products with categories from Foks system.
 Our platform can import product from one place to different marketplaces like (Rozetka, Promua, Wordpress, Opencart and others...).
 We support over 450 clients from different countries (Europe, USA, Ukraine).
 
+## Requires
+> php 7.4
+
+## Commands
+1. connect to ssh
+2. cd /wp-content/plugins/foksImportExport
+3. chmod 755 bin/console.php
+
+`php bin/console.php import-products`
+
 ## Changelog
 
 ### 1.0.0
