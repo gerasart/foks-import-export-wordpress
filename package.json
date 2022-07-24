@@ -28,10 +28,7 @@
     "development": "webpack --watch --hide-modules --env.NODE_ENV=development  --mode development",
     "stage": "webpack --watch --hide-modules --env.NODE_ENV=stage  --mode development",
     "production": "webpack --progress --hide-modules -p --env.NODE_ENV=production  --mode production",
-    "del_dist": "rimraf dist",
-    "__home": "opn http://wp.docker.localhost:8000/",
-    "__pma": "opn http://pma.wp.docker.localhost:8000/",
-    "__portainer": "opn http://portainer.wp.docker.localhost:8000/"
+    "del_dist": "rimraf dist"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

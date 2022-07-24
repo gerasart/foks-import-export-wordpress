@@ -42,8 +42,8 @@ class ForksImportExport
      */
     private static function cc_autoload(): void
     {
-
         $namespaces = self::getDefinedNamespaces();
+
         foreach ($namespaces as $namespace => $path) {
             $clear = substr($namespace, 0, -1);
             ClassFinder::setAppRoot(FOKS_PATH);
