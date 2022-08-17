@@ -1,0 +1,19 @@
+{
+  "title" : "FOKS Import/Export",
+  "waiting_total" : "Waiting for total products...",
+  "loaded_products": "Loaded products",
+  "title_import": "Import",
+  "title_export": "Export",
+  "title_settings": "Settings",
+  "title_logs": "Logs",
+  "success": "Import success",
+  "save": "Save settings",
+  "import": "Import now",
+  "export_now": "Export now",
+  "saved": "Saved!",
+  "settings_cron": "Import/Export Cron",
+  "import_label": "Import url",
+  "settings_img": "Import without img",
+  "export_file": "foks_export.xml",
+  "on_off": "On/Off"
+}

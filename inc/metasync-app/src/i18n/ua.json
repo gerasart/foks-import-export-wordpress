@@ -1,0 +1,19 @@
+{
+  "title" : "FOKS Імпорт/Експорт",
+  "waiting_total" : "Waiting for total products...",
+  "loaded_products": "Loaded products",
+  "title_import": "Імпорт",
+  "title_export": "Експорт",
+  "title_settings": "Налаштування",
+  "title_logs": "Логі",
+  "success": "Імпорт вдалий",
+  "save": "Зберегти налаштування",
+  "import": "Імпортувати",
+  "export_now": "Експортувати",
+  "saved": "Зберегти!",
+  "settings_cron": "Імпорт/Експорт Cron",
+  "import_label": "Імпорт посилання",
+  "settings_img": "Імпортувати без зображень",
+  "export": "foks_export.xml",
+  "on_off": "Вкл/Выкл"
+}
