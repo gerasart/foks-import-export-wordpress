@@ -1,7 +1,8 @@
 <?php
 /**
- * Created by seonarnia.com.
- * User: gerasymenkoph@gmail.com
+ * Created by metasync.site.
+ * Developer: gerasymenkoph@gmail.com
+ * Link: https://t.me/gerasart
  */
 
 declare(strict_types=1);
@@ -14,6 +15,18 @@ use Foks\Model\Product;
 class Export implements ExportInterface
 {
     public static $taxonomy = 'product_cat';
+
+    /**
+     * @return void
+     */
+    public static function getGenerateXml(): void
+    {
+        register_rest_route('foks', 'foksExport', [
+            'methods' => 'GET',
+            'callback' => __CLASS__ . '::generateXML',
+            'permission_callback' => '__return_true',
+        ]);
+    }
 
     public static function getProducts(): array
     {
@@ -77,19 +90,18 @@ class Export implements ExportInterface
         return $topCategories;
     }
 
+
     /**
-     * @return void
+     * @return string[]
      */
-    public static function generateXML(): void
+    public static function generateXML(): array
     {
         $categories = self::getCategories();
         $products = self::getProducts();
         $site_url = get_site_url();
         $site_name = get_bloginfo('name');
         $currency = get_woocommerce_currency();
-
         $date = date('Y-m-d H:i:s');
-
         $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         $output .= '<!DOCTYPE yml_catalog SYSTEM "shops.dtd">' . "\n";
         $output .= '<yml_catalog date="' . $date . '">' . "\n";
@@ -104,6 +116,7 @@ class Export implements ExportInterface
         $output .= '</currencies>' . "\n";
         if ($categories) {
             $output .= '<categories>' . "\n";
+
             foreach ($categories as $item) {
                 $output .= "\t" . '<category id="' . $item->term_id . '">' . $item->name . '</category>' . "\n";
                 if (!empty($item->children)) {
@@ -115,6 +128,7 @@ class Export implements ExportInterface
             $output .= '</categories>' . "\n";
         }
         $output .= '<offers>' . "\n";
+
         foreach ($products as $product) {
             if ($product) {
                 $output .= "\t" . '<offer id="' . $product->id . '" available="true">' . "\n";
@@ -139,7 +153,7 @@ class Export implements ExportInterface
                 if ($product->vendor) :
                     $output .= "\t" . '<vendor>' . $product->vendor . '</vendor>' . "\n";
                 endif;
-                $output .= "\t" . '<name>' . $product->title . '</name>' . "\n";
+                $output .= "\t" . '<name>' . html_entity_decode($product->title) . '</name>' . "\n";
                 $output .= "\t" . '<description>' . htmlspecialchars($product->description) . "\n";
                 $output .= "\t" . '</description>' . "\n";
                 if ($product->params):
@@ -161,20 +175,6 @@ class Export implements ExportInterface
 
         Logger::file($output,'foks_export', 'xml');
 
-        header("Content-Type: application/xml; charset=utf-8");
-
-        echo $output;
-    }
-
-    /**
-     * @return void
-     */
-    public static function getGenerateXml(): void
-    {
-        register_rest_route('foks', 'foksExport', [
-            'methods' => 'GET',
-            'callback' => __CLASS__ . '::generateXML',
-            'permission_callback' => '__return_true',
-        ]);
+        return ['result' => 'ok'];
     }
 }

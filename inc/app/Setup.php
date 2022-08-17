@@ -1,7 +1,8 @@
 <?php
 /**
- * Created by seonarnia.com.
- * User: gerasymenkoph@gmail.com
+ * Created by metasync.site.
+ * Developer: gerasymenkoph@gmail.com
+ * Link: https://t.me/gerasart
  */
 
 declare(strict_types=1);
@@ -41,7 +42,7 @@ class Setup
 
     public function enqueue_admin(): void
     {
-        wp_enqueue_script(FOKS_NAME, FOKS_URL . 'dist/scripts/vue.js', array('jquery'), time(), true);
-        wp_enqueue_style(FOKS_NAME, FOKS_URL . 'dist/styles/vue.css');
+        wp_enqueue_script(FOKS_NAME, FOKS_URL . 'inc/metasync-app/dist/app.js', array('jquery'), time(), true);
+        wp_enqueue_style(FOKS_NAME, FOKS_URL . 'inc/metasync-app/dist/index.css');
     }
 }

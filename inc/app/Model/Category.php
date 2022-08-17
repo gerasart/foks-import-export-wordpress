@@ -1,7 +1,8 @@
 <?php
 /**
- * Created by seonarnia.com.
- * User: gerasymenkoph@gmail.com
+ * Created by metasync.site.
+ * Developer: gerasymenkoph@gmail.com
+ * Link: https://t.me/gerasart
  */
 
 declare(strict_types=1);

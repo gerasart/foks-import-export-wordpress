@@ -1,9 +1,9 @@
 <?php
 /*
  * Plugin Name: FoksImportExport
- * Version: 2.2.0
- * Plugin URI: https://#
- * Description: Import Export Integraton.
+ * Version: 3.0.0
+ * Plugin URI: https://metasync.site
+ * Description: Import Export integration.
  * Author: Gerasart
  * Author URI: https://t.me/gerasart
  */
@@ -12,11 +12,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+const FOKS_VERSION = '3.0.0';
+const FOKS_NAME = 'foks';
+
 define('FOKS_BASENAME', plugin_basename(__FILE__));
 define('FOKS_PATH', plugin_dir_path(__FILE__));
 define('FOKS_URL', plugin_dir_url(__FILE__));
 define('FOKS_PAGE', $_SERVER['QUERY_STRING']);
-define('FOKS_NAME', 'foks');
 define('FOKS_DIR_IMAGE', wp_get_upload_dir());
 require_once __DIR__ . '/vendor/autoload.php';
 

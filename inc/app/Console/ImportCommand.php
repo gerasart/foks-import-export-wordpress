@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by metasync.site.
+ * Developer: gerasymenkoph@gmail.com
+ * Link: https://t.me/gerasart
+ */
+
 declare(strict_types=1);
 
 namespace Foks\Console;
@@ -13,10 +19,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Created by seonarnia.com.
- * User: gerasymenkoph@gmail.com
- */
 class ImportCommand extends Command
 {
     private const BATCH_SIZE = 1;
@@ -31,7 +33,7 @@ class ImportCommand extends Command
     /**
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Start import products');
 
@@ -57,5 +59,7 @@ class ImportCommand extends Command
         }
 
         $output->writeln('Complete.');
+
+        return 1;
     }
 }

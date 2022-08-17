@@ -1,7 +1,8 @@
 <?php
 /**
- * Created by seonarnia.com.
- * User: gerasymenkoph@gmail.com
+ * Created by metasync.site.
+ * Developer: gerasymenkoph@gmail.com
+ * Link: https://t.me/gerasart
  */
 
 declare(strict_types=1);
@@ -19,7 +20,7 @@ trait LocalVars
         $update = get_option('foks_update');
         $img = get_option('foks_img');
 
-        self::$admin_vars['foks'] = [
+        self::$admin_vars['settings'] = [
             'import' => $import ?: '',
             'update' => $update ?: '1',
             'export' => get_site_url() . '/wp-json/foks/foksExport',

@@ -1,7 +1,8 @@
 <?php
 /**
- * Created by seonarnia.com.
- * User: gerasymenkoph@gmail.com
+ * Created by metasync.site.
+ * Developer: gerasymenkoph@gmail.com
+ * Link: https://t.me/gerasart
  */
 
 declare(strict_types=1);
@@ -25,7 +26,6 @@ class AjaxActions extends Ajax
     public static function ajax_nopriv_importFoks(): void
     {
         Logger::file(0, 'total', 'json');
-
         $file = get_option('foks_import');
         $data = [];
 

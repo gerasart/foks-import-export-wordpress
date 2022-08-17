@@ -37,3 +37,6 @@ Small fixes.
 
 ### 2.2.0
 Update core api and support product variations.
+
+### 3.0.0
+New frontend logic

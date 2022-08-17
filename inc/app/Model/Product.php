@@ -1,7 +1,8 @@
 <?php
 /**
- * Created by seonarnia.com.
- * User: gerasymenkoph@gmail.com
+ * Created by metasync.site.
+ * Developer: gerasymenkoph@gmail.com
+ * Link: https://t.me/gerasart
  */
 
 declare(strict_types=1);
@@ -15,6 +16,8 @@ class Product
     public const SIMPLE_TYPE = 'simple';
 
     public const VARIATION_TYPE = 'variation';
+
+    public const DEFAULT_QUANTITY = 999;
 
     /**
      * @param $productId
@@ -71,7 +74,7 @@ class Product
             'category_id' => Category::getCategoryId($productId),
             'price' => $price ?: '',
             'sale_price' => $sale_price ?: '',
-            'quantity' => $quantity ?: 999,
+            'quantity' => $quantity ?: self::DEFAULT_QUANTITY,
             'sku' => $sku ?: '',
             'params' => $attr_data ?: [],
             'vendor' => '',
@@ -93,59 +96,43 @@ class Product
             $i++;
             Logger::file($i, 'current', 'json');
             $productType = empty($product['variation']) ? self::SIMPLE_TYPE : self::VARIATION_TYPE;
-            $slug = Translit::execute($product['name'], true);
-            $post = [
-                'post_content' => $product['description'],
-                'post_status' => 'pending',
-                'post_title' => $productType === 'simple' ? $product['name'] : $product['name'] . '-variation',
-                'post_name' => $slug,
-                'post_parent' => '',
-                'post_type' => $productType === 'simple' ? "product" : 'product_variation',
-            ];
+            $isVariation = $productType === self::VARIATION_TYPE;
 
-            $getProduct = self::getProductByName($product['name']);
-
-            if (!$getProduct) {
-                $productId = wp_insert_post($post);
-            } else {
-                $productId = (int)$getProduct->ID;
+            if ($isVariation) {
+                ProductVariation::create($product);
             }
 
-            $manageStock = $product['quantity'] ? "yes" : "no";
-            Category::updateCategory($product, $productId, $categories);
-
-            if (!$isImgOption || $isImgOption === 'false') {
-                Image::addImages($productId, $product['images']);
-            }
-
-            if (!$getProduct) {
-                wp_set_object_terms($productId, $productType, 'product_type');
-            }
-
-            if ($productType === self::SIMPLE_TYPE) {
-                update_post_meta($productId, '_foks_id', $product['foks_id']);
-                update_post_meta($productId, '_visibility', 'visible');
-                update_post_meta($productId, '_stock_status', $product['quantity'] ? 'instock' : 'outofstock');
-
-                if ($product['price_old']) {
-                    update_post_meta($productId, '_sale_price', $product['price']);
-                    update_post_meta($productId, '_price', $product['price']);
-                    update_post_meta($productId, '_regular_price', $product['price_old']);
-                } else {
-                    update_post_meta($productId, '_price', $product['price']);
-                    update_post_meta($productId, '_regular_price', $product['price']);
-                }
-
-                update_post_meta($productId, '_featured', "no");
-                update_post_meta($productId, '_sku', $product['model']);
-                update_post_meta($productId, '_product_attributes', []);
-                Attribute::addAttributeGroup((int)$productId, $product['attributes']);
-                update_post_meta($productId, '_manage_stock', $manageStock);
-                update_post_meta($productId, '_backorders', "no");
-                update_post_meta($productId, '_stock', $product['quantity']);
-            } else if (!empty($product['variation'])) {
-                ProductVariation::create((int)$productId, $product);
-            }
+//            if (!$isVariation) {
+//                $slug = Translit::execute($product['name'], true);
+//                $post = [
+//                    'post_content' => $product['description'],
+//                    'post_status' => 'pending',
+//                    'post_title' => $productType === 'simple' ? $product['name'] : $product['name'] . '-variation',
+//                    'post_name' => $slug,
+//                    'post_parent' => '',
+//                    'post_type' => $productType === 'simple' ? "product" : 'product_variation',
+//                ];
+//                $getProduct = self::getProductByName($product['name']);
+//
+//                if (!$getProduct) {
+//                    $productId = wp_insert_post($post);
+//                } else {
+//                    $productId = (int)$getProduct->ID;
+//                }
+//
+//                $manageStock = $product['quantity'] ? "yes" : "no";
+//                Category::updateCategory($product, $productId, $categories);
+//
+//                if (!$isImgOption || $isImgOption === 'false') {
+//                    Image::addImages($productId, $product['images']);
+//                }
+//
+//                if (!$getProduct) {
+//                    wp_set_object_terms($productId, $productType, 'product_type');
+//                }
+//            } else {
+//                ProductVariation::create($product);
+//            }
         }
     }
 
