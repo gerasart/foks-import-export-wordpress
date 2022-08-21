@@ -37,9 +37,9 @@ class OrderTest extends TestCase
 
     private function setTestConfig()
     {
-        \Cloudipsp\Configuration::setMerchantId($this->mid);
-        \Cloudipsp\Configuration::setSecretKey($this->secret_key);
-        \Cloudipsp\Configuration::setApiVersion('1.0');
+        Configuration::setMerchantId($this->mid);
+        Configuration::setSecretKey($this->secret_key);
+        Configuration::setApiVersion('1.0');
     }
 
     /**
@@ -48,11 +48,13 @@ class OrderTest extends TestCase
     public function testStatus()
     {
         $this->setTestConfig();
-        $data = \Cloudipsp\Order::status($this->orderID);
+        $data = Order::status($this->orderID);
         $result = $data->getData();
         $this->assertNotEmpty($result['order_id'], 'order_id is empty');
         $this->assertNotEmpty($result['order_status'], 'order_status is empty');
         $this->assertEquals($result['response_status'], 'success');
+        $this->assertEquals( true, $data->isApproved());
+        $this->assertEquals( true, $data->isValid());
 
     }
 
@@ -67,10 +69,11 @@ class OrderTest extends TestCase
             'amount' => 1000,
             'order_id' => $this->orderID['order_id']
         ];
-        $data = \Cloudipsp\Order::capture($captureData);
+        $data = Order::capture($captureData);
         $result = $data->getData();
-        $this->assertInternalType('array', $result);
+        $this->assertIsMyArray($result);
         $this->assertEquals($result['capture_status'], 'captured');
+        $this->assertEquals(true, $data->isCaptured(true));
     }
 
     /**
@@ -81,14 +84,15 @@ class OrderTest extends TestCase
         $this->setTestConfig();
         $reverseData = [
             'currency' => 'USD',
-            'amount' => 10,
+            'amount' => 1000,
             'order_id' => $this->orderID['order_id']
         ];
-        $data = \Cloudipsp\Order::reverse($reverseData);
+        $data = Order::reverse($reverseData);
         $result = $data->getData();
         $this->assertNotEmpty($result['order_id'], 'order_id is empty');
         $this->assertEquals($result['response_status'], 'success');
         $this->assertEquals($result['reverse_status'], 'approved');
+        $this->assertEquals(true, $data->isReversed());
     }
 
     /**
@@ -97,23 +101,25 @@ class OrderTest extends TestCase
     public function testTransactionList()
     {
         $this->setTestConfig();
-        $data = \Cloudipsp\Order::transactionList($this->orderID);
+        $data = Order::transactionList($this->orderID);
         $result = $data->getData();
-        $this->assertInternalType('array', $result);
-        $this->assertContains('payment_id', $result[0]);
+        $this->assertIsMyArray($result);
+        $this->assertEquals('approved', $result[0]['transaction_status']);
 
     }
 
     /**
-     * @throws Exception\ApiException
+     * @param $array
+     * @param $message
      */
-    /*public function testAtolLogs()
+    private function assertIsMyArray($array, $message = '')
     {
-        $this->setTestConfig();
-        $data = \Cloudipsp\Order::atolLogs($this->orderID);
-        $result = $data->getData();
-        $this->assertInternalType('array', $result);
-    }*/
+        if (method_exists(get_parent_class($this), 'assertIsArray')) {
+            $this->assertIsArray($array, $message);
+        } else {
+            $this->assertInternalType('array', $array, $message);
+        }
+    }
 
     /**
      * @param $data
@@ -122,7 +128,7 @@ class OrderTest extends TestCase
      */
     private function createOrder($data)
     {
-        $data = \Cloudipsp\Pcidss::start($data);
+        $data = Pcidss::start($data);
         return $data->getData()['order_id'];
     }
 }

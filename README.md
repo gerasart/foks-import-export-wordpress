@@ -3,10 +3,38 @@
 ![This is image title](http://res2.weblium.site/res/5b45bd7f6994e20025bdd7cc/5b47697c0240710022fdab69_optimized_443 "This is image title")
 ***
 # About Services
-Вы можете легко импортировать, експортировать товары в нашу систему.
+Export/Import products with categories from Foks system.
 
-### Одна платформа, безграничные возможности!
+Our platform can import product from one place to different marketplaces like (Rozetka, Promua, Wordpress, Opencart and others...).
+We support over 450 clients from different countries (Europe, USA, Ukraine).
 
-Неважно, начинаете ли Вы свое путешествие по электронной коммерции в качестве начинающего продавца или являетесь признанным брендом.
-В настоящее время FOKS объединяет более 450 различных магазинов, которые успешно продают свои товары на ROZETKA, и других марктеплейсах в том числе в Европе и США. 
-Продавайте свои товары не только в Украине, но и в другие страны. Производите интеграцию вашего интернет магазина с FOKS.
+## Requires
+> php 7.4
+
+## Commands
+`chmod 755 wp-content/plugins/foksImportExport/bin/console.php`
+
+1. `php wp-content/plugins/foksImportExport/bin/console.php import-products`
+
+## Changelog
+
+### 1.0.0
+Init core with simple import.
+
+### 1.1.0
+Add export.
+
+### 1.2.0
+Add Cron.
+
+### 2.0.0
+Add settings ui interface.
+
+### 2.1.0
+Small fixes.
+
+### 2.2.0
+Update core api and support product variations.
+
+### 3.0.0
+New frontend logic
