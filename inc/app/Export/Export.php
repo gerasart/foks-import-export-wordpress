@@ -1,5 +1,6 @@
 <?php
-/**
+/*
+ * Copyright (c) 2022.
  * Created by metasync.site.
  * Developer: gerasymenkoph@gmail.com
  * Link: https://t.me/gerasart
@@ -10,12 +11,12 @@ declare(strict_types=1);
 namespace Foks\Export;
 
 use Foks\Log\Logger;
-use Foks\Model\Product;
+use Foks\Model\Resource\LogResourceModel;
+use Foks\Model\Woocommerce\Category;
+use Foks\Model\Woocommerce\Product;
 
-class Export implements ExportInterface
+class Export
 {
-    public static $taxonomy = 'product_cat';
-
     /**
      * @return void
      */
@@ -28,76 +29,13 @@ class Export implements ExportInterface
         ]);
     }
 
-    public static function getProducts(): array
-    {
-        $args = [
-            'limit' => -1,
-            'orderby' => 'date',
-            'order' => 'DESC',
-            'return' => 'ids',
-            'status' => 'publish'
-        ];
-
-        $query = new \WC_Product_Query($args);
-        $products = $query->get_products();
-        $result = [];
-
-        foreach ($products as $product_id) {
-            $result[] = Product::getProductById($product_id);
-        }
-        return $result;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getCategories(): array
-    {
-        $categories = get_categories([
-            'taxonomy' => self::$taxonomy,
-            'type' => 'post',
-            'child_of' => 0,
-            'parent' => '',
-            'orderby' => 'name',
-            'order' => 'ASC',
-            'hide_empty' => 0,
-            'hierarchical' => 1,
-            'exclude' => '',
-            'include' => '',
-            'number' => 0,
-            'pad_counts' => false,
-        ]);
-        $topCategories = [];
-        $subCategories = [];
-
-        foreach ($categories as $cat) {
-            if (isset($cat->category_parent) && $cat->category_parent == 0) {
-                $topCategories[$cat->term_id] = $cat;
-                $topCategories[$cat->term_id]->children = [];
-            } else if ($cat) {
-                $subCategories[] = $cat;
-            }
-        }
-
-        if ($subCategories) {
-            foreach ($subCategories as $sub_cat) {
-                if (isset($topCategories[$sub_cat->category_parent])) {
-                    $topCategories[$sub_cat->category_parent]->children[] = ($sub_cat);
-                }
-            }
-        }
-
-        return $topCategories;
-    }
-
-
     /**
      * @return string[]
      */
     public static function generateXML(): array
     {
-        $categories = self::getCategories();
-        $products = self::getProducts();
+        $categories = Category::getCategories();
+        $products = Product::getProducts();
         $site_url = get_site_url();
         $site_name = get_bloginfo('name');
         $currency = get_woocommerce_currency();
@@ -153,7 +91,7 @@ class Export implements ExportInterface
                 if ($product->vendor) :
                     $output .= "\t" . '<vendor>' . $product->vendor . '</vendor>' . "\n";
                 endif;
-                $output .= "\t" . '<name>' . html_entity_decode($product->title) . '</name>' . "\n";
+                $output .= "\t" . '<name>' . htmlspecialchars($product->title) . '</name>' . "\n";
                 $output .= "\t" . '<description>' . htmlspecialchars($product->description) . "\n";
                 $output .= "\t" . '</description>' . "\n";
                 if ($product->params):
@@ -173,7 +111,12 @@ class Export implements ExportInterface
         $output .= '</shop>' . "\n";
         $output .= '</yml_catalog>';
 
-        Logger::file($output,'foks_export', 'xml');
+        Logger::file($output, 'foks_export', 'xml');
+
+        LogResourceModel::set([
+            'action' => 'export',
+            'message' => 'export completed',
+        ]);
 
         return ['result' => 'ok'];
     }

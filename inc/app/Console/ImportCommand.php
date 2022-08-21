@@ -1,5 +1,6 @@
 <?php
-/**
+/*
+ * Copyright (c) 2022.
  * Created by metasync.site.
  * Developer: gerasymenkoph@gmail.com
  * Link: https://t.me/gerasart
@@ -11,9 +12,9 @@ namespace Foks\Console;
 
 use Foks\Import\Import;
 use Foks\Log\Logger;
-use Foks\Model\Category;
-use Foks\Model\Product;
-use Foks\Model\ProductVariation;
+use Foks\Model\Woocommerce\Category;
+use Foks\Model\Woocommerce\Product;
+use Foks\Model\Woocommerce\ProductVariation;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,10 @@ class ImportCommand extends Command
 {
     private const BATCH_SIZE = 1;
 
-    protected function configure()
+    /**
+     * @return void
+     */
+    protected function configure(): void
     {
         $this->setName('import-products')
             ->setDescription('Import products')
@@ -31,9 +35,13 @@ class ImportCommand extends Command
     }
 
     /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return int
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Start import products');
 

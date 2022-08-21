@@ -1,5 +1,6 @@
 <?php
-/**
+/*
+ * Copyright (c) 2022.
  * Created by metasync.site.
  * Developer: gerasymenkoph@gmail.com
  * Link: https://t.me/gerasart
@@ -24,6 +25,7 @@ class Cron
 
     /**
      * @param $schedules
+     *
      * @return mixed
      */
     public static function cronTimes($schedules)
@@ -52,6 +54,9 @@ class Cron
         return $schedules;
     }
 
+    /**
+     * @return void
+     */
     public static function registration(): void
     {
         $option_time = (int)get_option('foks_update');

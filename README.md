@@ -12,11 +12,9 @@ We support over 450 clients from different countries (Europe, USA, Ukraine).
 > php 7.4
 
 ## Commands
-1. connect to ssh
-2. cd /wp-content/plugins/foksImportExport
-3. chmod 755 bin/console.php
+`chmod 755 wp-content/plugins/foksImportExport/bin/console.php`
 
-`php bin/console.php import-products`
+1. `php wp-content/plugins/foksImportExport/bin/console.php import-products`
 
 ## Changelog
 

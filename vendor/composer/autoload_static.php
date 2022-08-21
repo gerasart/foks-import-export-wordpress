@@ -42,6 +42,8 @@ class ComposerStaticInit0ec0ea4207ae8e8c1d518e4cc2b2f6d7
         ),
         'F' => 
         array (
+            'Foks\\Model\\Resource\\' => 20,
+            'Foks\\Ajax\\' => 10,
             'Foks\\' => 5,
         ),
         'C' => 
@@ -98,6 +100,14 @@ class ComposerStaticInit0ec0ea4207ae8e8c1d518e4cc2b2f6d7
         'HaydenPierce\\ClassFinder\\' => 
         array (
             0 => __DIR__ . '/..' . '/haydenpierce/class-finder/src',
+        ),
+        'Foks\\Model\\Resource\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/app/Model/Resource',
+        ),
+        'Foks\\Ajax\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/app/Ajax',
         ),
         'Foks\\' => 
         array (

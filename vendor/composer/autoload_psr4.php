@@ -18,6 +18,8 @@ return array(
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'HaydenPierce\\ClassFinder\\UnitTest\\' => array($vendorDir . '/haydenpierce/class-finder/test/unit'),
     'HaydenPierce\\ClassFinder\\' => array($vendorDir . '/haydenpierce/class-finder/src'),
+    'Foks\\Model\\Resource\\' => array($baseDir . '/inc/app/Model/Resource'),
+    'Foks\\Ajax\\' => array($baseDir . '/inc/app/Ajax'),
     'Foks\\' => array($baseDir . '/inc/app'),
     'Cloudipsp\\' => array($vendorDir . '/cloudipsp/php-sdk-v2/lib'),
 );

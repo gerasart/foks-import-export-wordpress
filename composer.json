@@ -8,7 +8,9 @@
   ],
   "autoload": {
     "psr-4": {
-      "Foks\\": "inc/app/"
+      "Foks\\": "inc/app/",
+      "Foks\\Model\\Resource\\": "inc/app/Model/Resource",
+      "Foks\\Ajax\\": "inc/app/Ajax"
     }
   },
   "require-dev": {

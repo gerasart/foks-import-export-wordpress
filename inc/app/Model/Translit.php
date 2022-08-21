@@ -1,5 +1,6 @@
 <?php
-/**
+/*
+ * Copyright (c) 2022.
  * Created by metasync.site.
  * Developer: gerasymenkoph@gmail.com
  * Link: https://t.me/gerasart
@@ -12,11 +13,11 @@ namespace Foks\Model;
 class Translit
 {
     /**
-     * @param $title
-     * @param $url
+     * @param string $title
+     * @param bool $isUrl
      * @return string
      */
-    public static function execute($title, $url = null): string
+    public static function execute(string $title, bool $isUrl = false): string
     {
         $words = [
             "Є" => "EH", "І" => "I", "і" => "i", "№" => "#", "є" => "eh",
@@ -37,7 +38,7 @@ class Translit
             "—" => "-", "«" => "", "»" => "", "…" => ""
         ];
 
-        if (!$url) {
+        if (!$isUrl) {
             return strtr($title, $words) ?: '';
         }
 
