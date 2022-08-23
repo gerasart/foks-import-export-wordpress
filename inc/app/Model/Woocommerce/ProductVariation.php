@@ -31,16 +31,19 @@ class ProductVariation
         $id = wc_get_product_id_by_sku($data['sku']);
 
         if (!$id) {
+            $slug = Translit::execute($data['name'], true);
+
             $post_data = [
-                'post_name' => Translit::execute($data['name'], true),
                 'post_title' => $data['name'],
+                'post_name' => $slug,
                 'post_content' => $data['description'],
-                'post_status' => 'pending',
+                'post_status' => 'publish',
                 'ping_status' => 'closed',
                 'post_type' => 'product',
             ];
 
             $productId = wp_insert_post($post_data);
+
             Category::updateCategory($data, $productId, $categories);
 
             if ($isImgOption) {
@@ -48,47 +51,37 @@ class ProductVariation
             }
 
             $product = new \WC_Product_Variable($productId);
-
             $product->set_name($data['name']);
             $product->set_sku($data['sku']);
-            $product->save();
+
             $attributes = self::prepareAttributes($data);
+
             $attrs = [];
             $index = 0;
-            $variations = get_option(Settings::VARIATION_FIELD);
-            $variationData = [];
-            $variationAttributes = [];
+            $variationOptions = self::variationOptions();
 
-            if ($variations) {
-                $row = AttributeResourceModel::getNameByIds(json_decode($variations));
-                $variationData = $row->names ? explode(',', $row->names) : [];
-            }
+            if (!empty($attributes)) {
+                foreach ($attributes as $key => $value) {
+                    $isVariation = in_array((string)$key, $variationOptions, true);
+                    $attribute = new \WC_Product_Attribute();
+                    $attribute->set_name($key);
+                    $attribute->set_options($value);
+                    $attribute->set_position($index);
+                    $attribute->set_visible(true);
+                    $attribute->set_variation($isVariation);
+                    $attrs[] = $attribute;
 
-            foreach ($attributes as $key => $value) {
-                $isVariation = in_array((string)$key, $variationData, true);
-                $attribute = new \WC_Product_Attribute();
-                $attribute->set_name($key);
-                $attribute->set_options($value);
-                $attribute->set_position($index);
-                $attribute->set_visible(true);
-                $attribute->set_variation($isVariation);
-                $attrs[] = $attribute;
-
-                if ($isVariation) {
-                    foreach ($value as $val) {
-                        $variationAttributes[] = [$key => $val];
-                    }
+                    $index++;
                 }
 
-                $index++;
+                $product->set_attributes($attrs);
             }
 
-            $product->set_attributes($attrs);
             $parentId = $product->save();
 
             foreach ($data['variation'] as $variation) {
                 try {
-                    self::setVariation($parentId, $variation, $variationAttributes);
+                    self::setVariation($parentId, $variation, $variationOptions);
                 } catch (\WC_Data_Exception $e) {
                     LogResourceModel::set([
                         'action' => 'error',
@@ -99,23 +92,28 @@ class ProductVariation
         }
     }
 
-    /**
-     * @param int $parentId
-     * @param array $data
-     * @param array $attributes
-     *
-     * @return void
-     * @throws \WC_Data_Exception
-     */
-    public static function setVariation(int $parentId, array $data, array $attributes): void
+    public static function setVariation(int $parentId, array $data, array $variationOptions): void
     {
-//        $i = 0;
-        $variation = new \WC_Product_Variation();
-        $variation->set_parent_id($parentId);
-        $variation->set_attributes($attributes);
-        $variation->set_regular_price($data['price']);
-        $variation->set_sku( "{$data['sku']}-$parentId");
-        $productId = $variation->save();
+        if (!empty($variationOptions)) {
+            $attributes = [];
+
+            foreach ($data['attributes'] as $attribute) {
+                $isVariation = in_array((string)$attribute['name'], $variationOptions, true);
+
+                if ($isVariation) {
+                    $attributes[sanitize_title($attribute['name'])] = $attribute['value'];
+                }
+            }
+
+            if ($attributes) {
+                $variation = new \WC_Product_Variation();
+                $variation->set_parent_id($parentId);
+                $variation->set_attributes($attributes);
+                $variation->set_regular_price($data['price']);
+                $variation->set_sku("{$data['sku']}-$parentId");
+                $productId = $variation->save();
+            }
+
 //        foreach ($attributes as $key => $values) {
 //
 //
@@ -124,6 +122,7 @@ class ProductVariation
 ////                }
 //            $i++;
 //        }
+        }
     }
 
     /**
@@ -173,5 +172,16 @@ class ProductVariation
         }
 
         return $attributes;
+    }
+
+    /**
+     * @return array|false|string[]
+     */
+    public static function variationOptions()
+    {
+        $variations = get_option(Settings::VARIATION_FIELD);
+        $row = AttributeResourceModel::getNameByIds(json_decode($variations));
+
+        return $row->names ? explode(',', $row->names) : [];
     }
 }

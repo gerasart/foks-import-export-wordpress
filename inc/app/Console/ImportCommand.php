@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportCommand extends Command
 {
-    private const BATCH_SIZE = 1;
+    private const BATCH_SIZE = 10;
 
     /**
      * @return void
