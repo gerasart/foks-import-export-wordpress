@@ -17,7 +17,6 @@ use Foks\Model\Translit;
 
 class ProductVariation
 {
-
     /**
      * @param array $data
      * @param array $categories
@@ -89,11 +88,15 @@ class ProductVariation
                     ]);
                 }
             }
+        } else {
+            // todo when exist product
         }
     }
 
     public static function setVariation(int $parentId, array $data, array $variationOptions): void
     {
+        $isLoadImage = !get_option('foks_img') || get_option('foks_img') === 'false';
+
         if (!empty($variationOptions)) {
             $attributes = [];
 
@@ -109,19 +112,21 @@ class ProductVariation
                 $variation = new \WC_Product_Variation();
                 $variation->set_parent_id($parentId);
                 $variation->set_attributes($attributes);
-                $variation->set_regular_price($data['price']);
+
+                if ($data['old_price']) {
+                    $variation->set_regular_price($data['old_price']);
+                    $variation->set_sale_price($data['price']);
+                } else {
+                    $variation->set_regular_price($data['price']);
+                }
+
                 $variation->set_sku("{$data['sku']}-$parentId");
                 $productId = $variation->save();
-            }
 
-//        foreach ($attributes as $key => $values) {
-//
-//
-////                if (isset($data['images'][0])) {
-////                    Image::addThumb((int)$productId, $data['images'][0]);
-////                }
-//            $i++;
-//        }
+                if ($isLoadImage && isset($data['images'][0])) {
+                    Image::addThumb($productId, $data['images'][0]);
+                }
+            }
         }
     }
 
