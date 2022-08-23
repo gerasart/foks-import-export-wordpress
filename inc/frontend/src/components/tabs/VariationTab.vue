@@ -1,8 +1,15 @@
+<!--
+  - Copyright (c) 2022.
+  - Created by metasync.site.
+  - Developer: gerasymenkoph@gmail.com
+  - Link: https://t.me/gerasart
+  -->
+
 <template>
   <div class="q-pa-md q-gutter-sm">
     <div class="mainTitle">{{ $t('title_variation') }}</div>
 
-    <div v-if="!isProgress" class="field-group">
+    <div v-if="!isProgress" class="field-group mb30">
       <q-btn color="purple" @click="importData" :label="$t('import_attributes')"/>
     </div>
 

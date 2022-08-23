@@ -13,18 +13,19 @@ namespace Foks\Model\Woocommerce;
 class Image
 {
     /**
-     * @param $file
-     * @param $parentPostId
+     * @param string $file
+     * @param int|null $parentPostId
+     *
      * @return bool|int|\WP_Error
      */
-    public static function upload($file, $parentPostId = null)
+    public static function upload(string $file, int $parentPostId = null)
     {
         $filename = basename($file);
-        $exist = self::exist($filename);
+        $isExist = self::exist($filename);
 
-        $upload_file = wp_upload_bits($filename, null, file_get_contents($file));
-        if (!$upload_file['error'] && !$exist) {
-            $wp_filetype = wp_check_filetype($filename, null);
+        $uploadFile = wp_upload_bits($filename, null, file_get_contents($file));
+        if (!$uploadFile['error'] && !$isExist) {
+            $wp_filetype = wp_check_filetype($filename);
 
             $attachment = array(
                 'post_mime_type' => $wp_filetype['type'],
@@ -36,40 +37,40 @@ class Image
                 $attachment['post_parent'] = $parentPostId;
             }
 
-            $attachment_id = wp_insert_attachment($attachment, $upload_file['file'], $parentPostId);
+            $attachmentId = wp_insert_attachment($attachment, $uploadFile['file'], $parentPostId);
 
-            if (!is_wp_error($attachment_id)) {
+            if (!is_wp_error($attachmentId)) {
                 require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-                $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
-                wp_update_attachment_metadata($attachment_id, $attachment_data);
+                $attachment_data = wp_generate_attachment_metadata($attachmentId, $uploadFile['file']);
+                wp_update_attachment_metadata($attachmentId, $attachment_data);
 
-                return $attachment_id;
+                return $attachmentId;
             }
 
             return false;
-
         }
 
-        if ($exist) {
+        if ($isExist) {
             if ($parentPostId) {
-                $attachment = array(
-                    'ID' => $exist,
+                $attachment = [
+                    'ID' => true,
                     'post_parent' => $parentPostId
-                );
+                ];
                 wp_update_post($attachment);
             }
 
-            return $exist;
+            return true;
         }
 
         return false;
     }
 
     /**
-     * @param $filename
+     * @param string $filename
+     *
      * @return bool
      */
-    public static function exist($filename): bool
+    public static function exist(string $filename): bool
     {
         $exp = explode('.', $filename);
         $title = array_shift($exp);
@@ -78,11 +79,12 @@ class Image
     }
 
     /**
-     * @param $title
+     * @param string $title
      * @param string $return
+     *
      * @return null|string
      */
-    public static function getImageIdByTitle($title, string $return = 'ID')
+    public static function getImageIdByTitle(string $title, string $return = 'ID')
     {
         global $wpdb;
 
@@ -99,15 +101,16 @@ class Image
 
 
     /**
-     * @param $productId
-     * @param $images
+     * @param int $productId
+     * @param array|null $images
+     *
      * @return void
      */
-    public static function addImages($productId, $images): void
+    public static function addImages(int $productId, ?array $images): void
     {
         if (isset($images[0])) {
 
-            self::addThumb((int)$productId, $images[0]);
+            self::addThumb($productId, $images[0]);
 
             if (isset($images[1])) {
                 $i = 0;
@@ -138,12 +141,12 @@ class Image
     }
 
     /**
-     * @param $url
-     * @param $product_id
+     * @param string|null $url
+     * @param int $productId
      *
-     * @return int|mixed
+     * @return int
      */
-    public static function getAttachmentIdFromUrl($url, $product_id)
+    public static function getAttachmentIdFromUrl(?string $url, int $productId): int
     {
         if (empty($url)) {
             return 0;
@@ -175,7 +178,7 @@ class Image
                     return $id;
                 }
 
-                $id = wc_rest_set_uploaded_image_as_attachment($upload, $product_id);
+                $id = wc_rest_set_uploaded_image_as_attachment($upload, $productId);
 
                 // Save attachment source for future reference.
                 if ($id) {

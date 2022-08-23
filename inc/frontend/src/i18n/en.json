@@ -38,5 +38,6 @@
   "action": "Action",
   "message": "Message",
   "search": "Search",
-  "created_at": "Created at"
+  "created_at": "Created at",
+  "wp_logs": "WP logs"
 }

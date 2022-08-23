@@ -18,10 +18,11 @@ class Category
     public const TAXONOMY_ENTITY = 'product_cat';
 
     /**
-     * @param $productId
+     * @param int $productId
+     *
      * @return int
      */
-    public static function getCategoryId($productId): int
+    public static function getCategoryId(int $productId): int
     {
         $terms = get_the_terms($productId, 'product_cat');
         $categoryId = 0;
@@ -39,13 +40,13 @@ class Category
     }
 
     /**
-     * @param $category_data
+     * @param array $categoryData
      *
-     * @return mixed
+     * @return array
      */
-    public static function addCategories($category_data)
+    public static function addCategories(array $categoryData): array
     {
-        foreach ($category_data as $cat) {
+        foreach ($categoryData as $cat) {
             if (!$cat['parent_id']) {
                 $term_exist = term_exists((string)$cat['parent_name'], 'product_cat');
 
@@ -56,7 +57,7 @@ class Category
             }
         }
 
-        foreach ($category_data as $cat) {
+        foreach ($categoryData as $cat) {
             if ($cat['parent_id']) {
                 $parent = term_exists((string)$cat['parent_name'], 'product_cat');
                 $term_exist = term_exists((string)$cat['name'], 'product_cat');
@@ -78,23 +79,23 @@ class Category
             }
         }
 
-        return $category_data;
+        return $categoryData;
     }
 
     /**
-     * @param $product
-     * @param $product_id
-     * @param $categories
+     * @param array $product
+     * @param int $productId
+     * @param array $categories
      *
      * @return mixed
      */
-    public static function updateCategory($product, $product_id, $categories)
+    public static function updateCategory(array $product, int $productId, array $categories)
     {
         $term_name = CategoryXml::getParentCatName($categories, $product['category'], $product['category']);
         $cat = term_exists($term_name, 'product_cat');
 
         if ($cat) {
-            wp_set_post_terms($product_id, (string)$cat['term_id'], 'product_cat');
+            wp_set_post_terms($productId, (string)$cat['term_id'], 'product_cat');
         }
 
         return $cat;

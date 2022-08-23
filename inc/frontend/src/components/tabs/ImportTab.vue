@@ -1,3 +1,10 @@
+<!--
+  - Copyright (c) 2022.
+  - Created by metasync.site.
+  - Developer: gerasymenkoph@gmail.com
+  - Link: https://t.me/gerasart
+  -->
+
 <template>
   <div class="q-pa-md q-gutter-sm">
     <div class="mainTitle">{{ $t('title_import') }}</div>
@@ -90,7 +97,9 @@ function ImportData() {
         timeout: 1000
       });
       progress.isSuccess = true;
-
+      progress.total_count = 0;
+      progress.count = 0;
+      progress.current_count = 0;
       pushLog('import', 'Finish import')
     }
   }).catch((error) => {

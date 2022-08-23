@@ -17,6 +17,10 @@ use Foks\Model\Woocommerce\Product;
 
 class Export
 {
+    public const EXPORT_FILE = 'foks_export';
+    public const EXPORT_PATH =  FOKS_PATH . 'logs/'.self::EXPORT_FILE.'.xml';
+    public const EXPORT_URL =  FOKS_URL . 'logs/'.self::EXPORT_FILE.'.xml';
+
     /**
      * @return void
      */

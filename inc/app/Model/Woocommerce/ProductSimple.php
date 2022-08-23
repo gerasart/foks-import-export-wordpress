@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Foks\Model\Woocommerce;
 
+use Foks\Model\Translit;
+
 class ProductSimple
 {
     /**
@@ -44,45 +46,42 @@ class ProductSimple
             'post_type' => "product",
         ];
 
-        $is_product = self::getProductByName($product['name']);
+        $isProduct = self::getProductByName($product['name']);
 
-        if (!$is_product) {
-            $product_id = wp_insert_post($post);
+        if (!$isProduct) {
+            $productId = wp_insert_post($post);
         } else {
-            $product_id = (int)$is_product->ID;
+            $productId = (int)$isProduct->ID;
         }
 
         $manageStock = $product['quantity'] ? "yes" : "no";
 
-        Category::updateCategory($product, $product_id, $categories);
+        Category::updateCategory($product, $productId, $categories);
 
         if ($isLoadImage) {
-            Image::addImages($product_id, $product['images']);
+            Image::addImages($productId, $product['images']);
         }
 
-        if (!$is_product) {
-            wp_set_object_terms($product_id, 'simple', 'product_type');
-        }
-
-        update_post_meta($product_id, '_foks_id', $product['foks_id']);
-        update_post_meta($product_id, '_visibility', 'visible');
-        update_post_meta($product_id, '_stock_status', $product['quantity'] ? 'instock' : 'outofstock');
+        wp_set_object_terms($productId, 'simple', 'product_type');
+        update_post_meta($productId, '_foks_id', $product['foks_id']);
+        update_post_meta($productId, '_visibility', 'visible');
+        update_post_meta($productId, '_stock_status', $product['quantity'] ? 'instock' : 'outofstock');
 
         if ($product['price_old']) {
-            update_post_meta($product_id, '_sale_price', $product['price']);
-            update_post_meta($product_id, '_price', $product['price']);
-            update_post_meta($product_id, '_regular_price', $product['price_old']);
+            update_post_meta($productId, '_sale_price', $product['price']);
+            update_post_meta($productId, '_price', $product['price']);
+            update_post_meta($productId, '_regular_price', $product['price_old']);
         } else {
-            update_post_meta($product_id, '_price', $product['price']);
-            update_post_meta($product_id, '_regular_price', $product['price']);
+            update_post_meta($productId, '_price', $product['price']);
+            update_post_meta($productId, '_regular_price', $product['price']);
         }
 
-        update_post_meta($product_id, '_featured', "no");
-        update_post_meta($product_id, '_sku', $product['model']);
-        update_post_meta($product_id, '_product_attributes', []);
-        Attribute::addAttributeGroup($product_id, $product['attributes']);
-        update_post_meta($product_id, '_manage_stock', $manageStock);
-        update_post_meta($product_id, '_backorders', "no");
-        update_post_meta($product_id, '_stock', $product['quantity']);
+        update_post_meta($productId, '_featured', "no");
+        update_post_meta($productId, '_sku', $product['model']);
+        update_post_meta($productId, '_product_attributes', []);
+        Attribute::addAttributeGroup($productId, $product['attributes']);
+        update_post_meta($productId, '_manage_stock', $manageStock);
+        update_post_meta($productId, '_backorders', "no");
+        update_post_meta($productId, '_stock', $product['quantity']);
     }
 }

@@ -1,3 +1,10 @@
+<!--
+  - Copyright (c) 2022.
+  - Created by metasync.site.
+  - Developer: gerasymenkoph@gmail.com
+  - Link: https://t.me/gerasart
+  -->
+
 <template>
   <q-list>
     <template v-for="(menuItem, index) in menuList" :key="index">
@@ -72,3 +79,4 @@ const menuList = ref([
   color:black;
 }
 </style>
+

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Foks\Model\Woocommerce;
 
 use Foks\Log\Logger;
+use Foks\Model\Resource\LogResourceModel;
 
 class Product
 {
@@ -19,10 +20,11 @@ class Product
     public const DEFAULT_QUANTITY = 999;
 
     /**
-     * @param $productId
+     * @param int $productId
+     *
      * @return object
      */
-    public static function getProductById($productId)
+    public static function getProductById(int $productId)
     {
         $thumb = has_post_thumbnail($productId) ? get_the_post_thumbnail_url($productId, 'full') : false;
         $categories = wp_get_post_terms($productId, 'product_cat', ['fields' => 'names']);
@@ -70,7 +72,7 @@ class Product
             'description' => $product->get_description(),
             'status' => get_post_meta($productId, '_stock_status', true),
             'category' => $categories[0] ?? '',
-            'category_id' => Category::getCategoryId($productId),
+            'category_id' => Category::getCategoryId((int)$productId),
             'price' => $price ?: '',
             'sale_price' => $sale_price ?: '',
             'quantity' => $quantity ?: self::DEFAULT_QUANTITY,
@@ -82,12 +84,11 @@ class Product
 
     /**
      * todo remove -> Бюстгальтер push-up gel Lormar (2166)
-     * @param $products
-     * @param $categories
      *
-     * @throws \Exception
+     * @param array $products
+     * @param array $categories
      */
-    public static function addProducts($products, $categories): void
+    public static function addProducts(array $products, array $categories): void
     {
         $isLoadImage = !get_option('foks_img') || get_option('foks_img') === 'false';
         $i = 0;
@@ -99,7 +100,14 @@ class Product
             $isVariation = $productType === self::VARIATION_TYPE;
 
             if ($isVariation) {
-                ProductVariation::create($product, $categories, $isLoadImage);
+                try {
+                    ProductVariation::create($product, $categories, $isLoadImage);
+                } catch (\WC_Data_Exception $e) {
+                    LogResourceModel::set([
+                        'action' => 'error',
+                        'message' => __CLASS__ . ': ' . __METHOD__ . ': ' . $e->getMessage(),
+                    ]);
+                }
             } else {
 //                ProductSimple::create($product, $categories, $isLoadImage);
             }
@@ -120,8 +128,8 @@ class Product
         $products = $query->get_products();
         $result = [];
 
-        foreach ($products as $product_id) {
-            $result[] = self::getProductById($product_id);
+        foreach ($products as $productId) {
+            $result[] = self::getProductById((int)$productId);
         }
         return $result;
     }

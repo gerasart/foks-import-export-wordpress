@@ -85,4 +85,13 @@ class AttributeResourceModel implements ResourceInterface
 
         $wpdb->query("TRUNCATE $table");
     }
+
+    public static function getNameByIds($ids) {
+        global $wpdb;
+
+        $table = $wpdb->base_prefix . self::TABLE_ENTITY;
+        $implodeIds = implode(',', $ids);
+
+        return $wpdb->get_row("SELECT GROUP_CONCAT(name) as names FROM $table WHERE id IN ($implodeIds)");
+    }
 }
