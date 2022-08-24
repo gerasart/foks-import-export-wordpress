@@ -10,9 +10,41 @@ declare(strict_types=1);
 
 namespace Foks\Console;
 
+use Foks\Import\Import;
+use Foks\Import\ImportAttributes;
+use Foks\Log\Logger;
+use Foks\Model\Settings;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class AttributesCommand extends Command
 {
+    protected function configure()
+    {
+        $this->setName('import-attributes')
+            ->setDescription('Import attributes')
+            ->setHelp('Import attributes for variation products');
+    }
 
+    /**
+     * @throws \Exception
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('Start');
+        $isFile = file_exists(Import::IMPORT_PATH);
+
+        if (!$isFile) {
+            $file = get_option(Settings::IMG_FIELD);
+            $xml = file_get_contents($file);
+            Logger::file($xml, Import::IMPORT_FILE, 'xml');
+        }
+
+        ImportAttributes::execute(Import::IMPORT_PATH);
+
+        $output->writeln('Complete');
+
+        return 1;
+    }
 }
