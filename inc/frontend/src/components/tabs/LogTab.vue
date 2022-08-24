@@ -17,6 +17,7 @@
       :rows="data.rows"
       :columns="columns"
       :loading="loading"
+      :pagination="pagination"
       row-key="name"
       :filter="filter"
       :auto-width="false"
@@ -65,7 +66,11 @@ const columns = ref([
   { name: 'created_at', label: t('created_at'), field: 'created_at', sortable: true },
 ]);
 const data = reactive({rows: []});
-const loading = ref(false)
+const loading = ref(false);
+const pagination = ref({
+  sortBy: 'asc',
+  rowsPerPage: 20,
+})
 
 loading.value = true;
 onMounted(() => {

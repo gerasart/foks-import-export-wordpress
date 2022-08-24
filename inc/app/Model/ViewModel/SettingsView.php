@@ -25,7 +25,6 @@ class SettingsView
     {
         $import = get_option(Settings::IMPORT_FIELD);
         $update = get_option(Settings::UPDATE_FIELD);
-        $img = get_option(Settings::IMG_FIELD);
         $variations = get_option(Settings::VARIATION_FIELD);
 
         self::$admin_vars['settings'] = [
@@ -33,7 +32,8 @@ class SettingsView
             'update' => $update ?: '1',
             'export' => get_site_url() . '/wp-json/foks/foksExport',
             'logs_url' => FOKS_URL . 'logs/',
-            'img' => $img === 'true',
+            'img' => Settings::isNeedImage(),
+            'isNeedCron' => Settings::isNeedCron(),
             'variations' => $variations ? json_decode($variations) : '',
             'isImportFile' => file_exists(Import::IMPORT_PATH),
             'isExportFile' => file_exists(Export::EXPORT_PATH),

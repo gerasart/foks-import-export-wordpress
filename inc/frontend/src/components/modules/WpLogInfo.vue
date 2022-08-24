@@ -14,7 +14,7 @@
 
         <q-separator/>
 
-        <q-card-section style="max-height: 60vh; width:  700px" class="scroll">
+        <q-card-section class="scroll">
           <div v-if="content">
             {{ content }}
           </div>

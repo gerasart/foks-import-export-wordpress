@@ -13,6 +13,7 @@ namespace Foks;
 use Foks\Export\Export;
 use Foks\Import\Import;
 use Foks\Log\Logger;
+use Foks\Model\Settings;
 
 class Cron
 {
@@ -100,13 +101,13 @@ class Cron
      */
     public static function action_ImportProducts(): void
     {
-        $file = get_option('foks_import');
+        $file = get_option(Settings::IMPORT_FIELD);
 
-        if ($file) {
+        if ($file && Settings::isNeedCron()) {
             $xml = file_get_contents($file);
             Logger::file($xml, 'foks_import', 'xml');
-            $file_path = FOKS_URL . '/logs/foks_import.xml';
-            Import::importData($file_path);
+            $filePath = FOKS_URL . '/logs/foks_import.xml';
+            Import::importData($filePath);
             Export::generateXML();
         }
     }

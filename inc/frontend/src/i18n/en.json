@@ -15,7 +15,7 @@
   "saved": "Saved!",
   "settings_cron": "Import/Export Cron",
   "import_label": "Import url",
-  "settings_img": "Import without img",
+  "settings_img": "Import img",
   "export_file": "foks_export.xml",
   "on_off": "On/Off",
   "title_delete": "Delete products",
@@ -39,5 +39,6 @@
   "message": "Message",
   "search": "Search",
   "created_at": "Created at",
-  "wp_logs": "WP logs"
+  "wp_logs": "WP logs",
+  "settings_is_need_cron": "Is enable cron"
 }

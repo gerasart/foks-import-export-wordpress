@@ -15,10 +15,10 @@
   "saved": "Зберегти!",
   "settings_cron": "Імпорт/Експорт Cron",
   "import_label": "Імпорт посилання",
-  "settings_img": "Імпортувати без зображень",
+  "settings_img": "Імпортувати зображення",
   "export_file": "foks_export.xml",
   "export": "foks_export.xml",
-  "on_off": "Вкл/Выкл",
+  "on_off": "Вкл/Викл",
   "title_delete": "Видалити товари",
   "delete": "Видалити",
   "clear_products": "Видалити товари",
@@ -39,5 +39,6 @@
   "message": "Повідомлення",
   "search": "Пошук",
   "created_at": "Дата створення",
-  "wp_logs": "WP Логі"
+  "wp_logs": "WP Логі",
+  "settings_is_need_cron": "Вімкнути крон"
 }

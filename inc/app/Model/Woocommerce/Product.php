@@ -90,7 +90,6 @@ class Product
      */
     public static function addProducts(array $products, array $categories): void
     {
-        $isLoadImage = !get_option('foks_img') || get_option('foks_img') === 'false';
         $i = 0;
 
         foreach ($products as $product) {
@@ -101,7 +100,7 @@ class Product
 
             if ($isVariation) {
                 try {
-                    ProductVariation::create($product, $categories, $isLoadImage);
+                    ProductVariation::create($product, $categories);
                 } catch (\WC_Data_Exception $e) {
                     LogResourceModel::set([
                         'action' => 'error',

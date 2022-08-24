@@ -29,6 +29,11 @@
 
     <div class="q-pa-md q-gutter-sm">
       <div class="title">{{ $t('settings_cron') }}</div>
+      <div class="q-gutter-sm">
+        <q-checkbox dense v-model="Settings.isNeedCron" :label="$t('settings_is_need_cron')"/>
+      </div>
+
+      <q-separator/>
 
       <div class="q-gutter-sm">
         <q-radio dense v-model="Settings.update" val="1" label="1h"/>
@@ -52,10 +57,10 @@
 import {ref} from "vue";
 import axios from 'axios';
 import * as qs from 'qs';
-import { useQuasar, QSpinnerGears } from 'quasar'
-import { useI18n } from 'vue-i18n';
+import {useQuasar, QSpinnerGears} from 'quasar'
+import {useI18n} from 'vue-i18n';
 
-const { t } = useI18n();
+const {t} = useI18n();
 const $q = useQuasar();
 const Settings = ref(window?.settings);
 
@@ -64,7 +69,7 @@ function saveSettings() {
     group: false,
     timeout: 0,
     spinner: QSpinnerGears,
-    message: t('save_start')+'...',
+    message: t('save_start') + '...',
   });
 
   axios.post(Settings.value?.ajaxUrl, qs.stringify({

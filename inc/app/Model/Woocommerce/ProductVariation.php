@@ -20,82 +20,113 @@ class ProductVariation
     /**
      * @param array $data
      * @param array $categories
-     * @param bool $isImgOption
+     *
+     * @return void
+      */
+    public static function create(array $data, array $categories): void
+    {
+        $productId = wc_get_product_id_by_sku($data['sku']);
+
+        try {
+            if (!$productId) {
+                $slug = Translit::execute($data['name'], true);
+
+                $post_data = [
+                    'post_title' => $data['name'],
+                    'post_name' => $slug,
+                    'post_content' => $data['description'],
+                    'post_status' => 'publish',
+                    'ping_status' => 'closed',
+                    'post_type' => 'product',
+                ];
+
+                $productId = wp_insert_post($post_data);
+
+                self::updateProduct($productId, $data, $categories);
+            } else {
+                self::updateProduct($productId, $data, $categories);
+            }
+        } catch (\WC_Data_Exception $e) {
+            LogResourceModel::set([
+                'action' => 'error',
+                'message' => __CLASS__ . ': ' . __METHOD__ . ': ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * @param int $productId
+     * @param array $data
+     * @param array $categories
      *
      * @return void
      * @throws \WC_Data_Exception
      */
-    public static function create(array $data, array $categories, bool $isImgOption): void
+    public static function updateProduct(int $productId, array $data, array $categories): void
     {
-        $id = wc_get_product_id_by_sku($data['sku']);
+        $isImgOption = Settings::isNeedImage();
 
-        if (!$id) {
-            $slug = Translit::execute($data['name'], true);
+        Category::updateCategory($data, $productId, $categories);
 
-            $post_data = [
-                'post_title' => $data['name'],
-                'post_name' => $slug,
-                'post_content' => $data['description'],
-                'post_status' => 'publish',
-                'ping_status' => 'closed',
-                'post_type' => 'product',
-            ];
+        if ($isImgOption) {
+            Image::addImages($productId, $data['images']);
+        }
 
-            $productId = wp_insert_post($post_data);
+        $product = new \WC_Product_Variable($productId);
+        $product->set_name($data['name']);
+        $product->set_sku($data['sku']);
 
-            Category::updateCategory($data, $productId, $categories);
+        $attributes = self::prepareAttributes($data);
+        $attrs = [];
+        $index = 0;
+        $variationOptions = self::variationOptions();
 
-            if ($isImgOption) {
-                Image::addImages($productId, $data['images']);
+        if (!empty($attributes)) {
+            foreach ($attributes as $key => $value) {
+                $isVariation = in_array((string)$key, $variationOptions, true);
+                $attribute = new \WC_Product_Attribute();
+                $attribute->set_name($key);
+                $attribute->set_options($value);
+                $attribute->set_position($index);
+                $attribute->set_visible(true);
+                $attribute->set_variation($isVariation);
+                $attrs[] = $attribute;
+
+                $index++;
             }
 
-            $product = new \WC_Product_Variable($productId);
-            $product->set_name($data['name']);
-            $product->set_sku($data['sku']);
+            $product->set_attributes($attrs);
+        }
 
-            $attributes = self::prepareAttributes($data);
+        $parentId = $product->save();
 
-            $attrs = [];
-            $index = 0;
-            $variationOptions = self::variationOptions();
+        $i = 0;
 
-            if (!empty($attributes)) {
-                foreach ($attributes as $key => $value) {
-                    $isVariation = in_array((string)$key, $variationOptions, true);
-                    $attribute = new \WC_Product_Attribute();
-                    $attribute->set_name($key);
-                    $attribute->set_options($value);
-                    $attribute->set_position($index);
-                    $attribute->set_visible(true);
-                    $attribute->set_variation($isVariation);
-                    $attrs[] = $attribute;
-
-                    $index++;
-                }
-
-                $product->set_attributes($attrs);
+        foreach ($data['variation'] as $variation) {
+            try {
+                self::setVariation($parentId, $variation, $variationOptions, $i);
+                $i++;
+            } catch (\WC_Data_Exception $e) {
+                LogResourceModel::set([
+                    'action' => 'error',
+                    'message' => __CLASS__ . ': ' . __METHOD__ . ': ' . $e->getMessage(),
+                ]);
             }
-
-            $parentId = $product->save();
-
-            foreach ($data['variation'] as $variation) {
-                try {
-                    self::setVariation($parentId, $variation, $variationOptions);
-                } catch (\WC_Data_Exception $e) {
-                    LogResourceModel::set([
-                        'action' => 'error',
-                        'message' => __CLASS__ . ': ' . __METHOD__ . ': ' . $e->getMessage(),
-                    ]);
-                }
-            }
-        } else {
-            // todo when exist product
         }
     }
 
-    public static function setVariation(int $parentId, array $data, array $variationOptions): void
+    /**
+     * @param int $parentId
+     * @param array $data
+     * @param array $variationOptions
+     * @param int $index
+     *
+     * @return void
+     * @throws \WC_Data_Exception
+     */
+    public static function setVariation(int $parentId, array $data, array $variationOptions, int $index): void
     {
-        $isLoadImage = !get_option('foks_img') || get_option('foks_img') === 'false';
+        $isLoadImage = Settings::isNeedImage();
 
         if (!empty($variationOptions)) {
             $attributes = [];
@@ -120,7 +151,7 @@ class ProductVariation
                     $variation->set_regular_price($data['price']);
                 }
 
-                $variation->set_sku("{$data['sku']}-$parentId");
+                $variation->set_sku("{$data['sku']}-$parentId-$index");
                 $productId = $variation->save();
 
                 if ($isLoadImage && isset($data['images'][0])) {
