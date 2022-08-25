@@ -19,9 +19,9 @@ class ExportCommand extends Command
 {
     protected function configure()
     {
-        $this->setName('clear-products')
-            ->setDescription('Clear products')
-            ->setHelp('Remove all products from woocommerce');
+        $this->setName('export-products')
+            ->setDescription('Export products')
+            ->setHelp('Generate xml for export products');
     }
 
     /**
@@ -33,7 +33,7 @@ class ExportCommand extends Command
 
         Export::generateXML();
 
-        $output->writeln('Complete: '.get_site_url() . '/wp-json/foks/foksExport');
+        $output->writeln('Complete: '.FOKS_URL . 'logs/foks_export.xml');
 
         return 1;
     }

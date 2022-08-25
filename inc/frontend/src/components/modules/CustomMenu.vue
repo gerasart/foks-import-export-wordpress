@@ -70,6 +70,12 @@ const menuList = ref([
     route: 'Delete',
     separator: true
   },
+  {
+    icon: 'info',
+    label: t('title_commands'),
+    route: 'Commands',
+    separator: true
+  },
 ]);
 </script>
 

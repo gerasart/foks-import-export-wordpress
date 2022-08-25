@@ -5,6 +5,7 @@ import LogTab from '../components/tabs/LogTab.vue';
 import SettingsTab from '../components/tabs/SettingsTab.vue';
 import DeleteProductsTab from '../components/tabs/DeleteProductsTab.vue';
 import VariationTab from '../components/tabs/VariationTab.vue';
+import CommandsTab from '../components/tabs/CommandsTab.vue';
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/delete',
     name: 'Delete',
     component: DeleteProductsTab,
+  },
+  {
+    path: '/commands',
+    name: 'Commands',
+    component: CommandsTab,
   },
 ]
 const router = createRouter({

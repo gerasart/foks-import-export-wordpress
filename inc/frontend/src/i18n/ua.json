@@ -40,5 +40,10 @@
   "search": "Пошук",
   "created_at": "Дата створення",
   "wp_logs": "WP Логі",
-  "settings_is_need_cron": "Вімкнути крон"
+  "settings_is_need_cron": "Вімкнути крон",
+  "title_commands" : "CLI команди",
+  "import_products_cli" : "Імпортувати товари CLI",
+  "import_attributes_cli" : "Імпортувати атрібути CLI",
+  "export_products_cli" : "Експорт товарів CLI",
+  "clear_products_cli" : "Видалити всі товари CLI"
 }
