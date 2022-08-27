@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Foks\Model;
 
 use Foks\Model\Resource\LogResourceModel;
+use Foks\Model\Woocommerce\Product;
 
 class Settings
 {
@@ -19,6 +20,7 @@ class Settings
     public const UPDATE_FIELD = 'foks_update';
     public const IS_NEED_CRON_FIELD = 'foks_is_need_cron';
     public const IMG_FIELD = 'foks_img';
+    public const PRODUCT_STATUS_FIELD = 'foks_product_status';
 
     /**
      * @param $variations
@@ -47,6 +49,7 @@ class Settings
         update_option(self::UPDATE_FIELD, $data['update']);
         update_option(self::IMG_FIELD, $data['img']);
         update_option(self::IS_NEED_CRON_FIELD, $data['isNeedCron']);
+        update_option(self::PRODUCT_STATUS_FIELD, $data['productStatus']);
 
         LogResourceModel::set([
             'action' => 'save settings',
@@ -68,5 +71,9 @@ class Settings
     public static function isNeedCron(): bool
     {
         return get_option(self::IS_NEED_CRON_FIELD) === 'true';
+    }
+
+    public static function getProductStatus() {
+        return get_option(self::PRODUCT_STATUS_FIELD) ?: Product::PUBLISH_STATUS;
     }
 }

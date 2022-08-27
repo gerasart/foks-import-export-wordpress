@@ -48,6 +48,16 @@
     </div>
 
     <div class="q-pa-md q-gutter-sm">
+      <div class="title">{{ $t('settings_product_status') }}</div>
+      <q-select
+          v-model="Settings.productStatus"
+          :options="Settings.statuses"
+          :label="$t('select_product_status')"
+          style="width: 350px"
+       />
+    </div>
+
+    <div class="q-pa-md q-gutter-sm">
       <q-btn color="secondary" :label="$t('save')" @click="saveSettings"/>
     </div>
   </div>

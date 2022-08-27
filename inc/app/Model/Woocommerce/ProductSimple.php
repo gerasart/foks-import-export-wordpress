@@ -10,36 +10,24 @@ declare(strict_types=1);
 
 namespace Foks\Model\Woocommerce;
 
+use Foks\Model\Settings;
 use Foks\Model\Translit;
 
 class ProductSimple
 {
     /**
-     * @param string $name
-     *
-     * @return mixed
-     */
-    public static function getProductByName(string $name)
-    {
-        global $wpdb;
-
-        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_title  = '$name'";
-        $data = $wpdb->get_results($query);
-
-        return $data[0] ?? [];
-    }
-
-    /**
      * @param array $product
      * @param array $categories
-     * @param bool $isLoadImage
+     *
      * @return void
      */
-    public static function create(array $product, array $categories, bool $isLoadImage): void
+    public static function create(array $product, array $categories): void
     {
+        $isLoadImage = Settings::isNeedImage();
+
         $post = [
             'post_content' => $product['description'],
-            'post_status' => "pending",
+            'post_status' => Settings::getProductStatus(),
             'post_title' => $product['name'],
             'post_name' => Translit::execute($product['name'], true),
             'post_parent' => '',
@@ -48,14 +36,19 @@ class ProductSimple
 
         $isProduct = self::getProductByName($product['name']);
 
+//        $productId = wc_get_product_id_by_sku($product['sku']);
+
         if (!$isProduct) {
             $productId = wp_insert_post($post);
+//        } else {
+//            Product::updateProductStatus($productId);
+//        }
         } else {
             $productId = (int)$isProduct->ID;
+            Product::updateProductStatus($productId);
         }
 
         $manageStock = $product['quantity'] ? "yes" : "no";
-
         Category::updateCategory($product, $productId, $categories);
 
         if ($isLoadImage) {
@@ -63,6 +56,7 @@ class ProductSimple
         }
 
         wp_set_object_terms($productId, 'simple', 'product_type');
+
         update_post_meta($productId, '_foks_id', $product['foks_id']);
         update_post_meta($productId, '_visibility', 'visible');
         update_post_meta($productId, '_stock_status', $product['quantity'] ? 'instock' : 'outofstock');
@@ -83,5 +77,20 @@ class ProductSimple
         update_post_meta($productId, '_manage_stock', $manageStock);
         update_post_meta($productId, '_backorders', "no");
         update_post_meta($productId, '_stock', $product['quantity']);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public static function getProductByName(string $name)
+    {
+        global $wpdb;
+
+        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_title  = '$name'";
+        $data = $wpdb->get_results($query);
+
+        return $data[0] ?? [];
     }
 }

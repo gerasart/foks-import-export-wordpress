@@ -11,13 +11,45 @@ declare(strict_types=1);
 namespace Foks\Model\Woocommerce;
 
 use Foks\Log\Logger;
-use Foks\Model\Resource\LogResourceModel;
+use Foks\Model\Settings;
 
 class Product
 {
     public const SIMPLE_TYPE = 'simple';
     public const VARIATION_TYPE = 'variation';
+    public const PRODUCT_VARIATION = 'product_variation';
     public const DEFAULT_QUANTITY = 999;
+    public const PUBLISH_STATUS = 'publish';
+    public const PENDING_STATUS = 'pending';
+    public const DRAFT_STATUS = 'draft';
+
+    public const PRODUCT_STATUSES = [
+        self::PUBLISH_STATUS,
+        self::PENDING_STATUS,
+        self::DRAFT_STATUS
+    ];
+
+    /**
+     * @param array $products
+     * @param array $categories
+     */
+    public static function addProducts(array $products, array $categories): void
+    {
+        $i = 0;
+
+        foreach ($products as $product) {
+            $i++;
+            Logger::file($i, 'current', 'json');
+            $productType = empty($product['variation']) || count($product['variation']) === 1 ? self::SIMPLE_TYPE : self::VARIATION_TYPE;
+            $isVariation = $productType === self::VARIATION_TYPE;
+
+            if ($isVariation) {
+                ProductVariation::create($product, $categories);
+            } else {
+                ProductSimple::create($product, $categories);
+            }
+        }
+    }
 
     /**
      * @param int $productId
@@ -82,37 +114,6 @@ class Product
         ];
     }
 
-    /**
-     * todo remove -> Бюстгальтер push-up gel Lormar (2166)
-     *
-     * @param array $products
-     * @param array $categories
-     */
-    public static function addProducts(array $products, array $categories): void
-    {
-        $i = 0;
-
-        foreach ($products as $product) {
-            $i++;
-            Logger::file($i, 'current', 'json');
-            $productType = empty($product['variation']) ? self::SIMPLE_TYPE : self::VARIATION_TYPE;
-            $isVariation = $productType === self::VARIATION_TYPE;
-
-            if ($isVariation) {
-                try {
-                    ProductVariation::create($product, $categories);
-                } catch (\WC_Data_Exception $e) {
-                    LogResourceModel::set([
-                        'action' => 'error',
-                        'message' => __CLASS__ . ': ' . __METHOD__ . ': ' . $e->getMessage(),
-                    ]);
-                }
-            } else {
-//                ProductSimple::create($product, $categories, $isLoadImage);
-            }
-        }
-    }
-
     public static function getProducts(): array
     {
         $args = [
@@ -162,5 +163,19 @@ class Product
         }
 
         return 1;
+    }
+
+
+    /**
+     * @param int $productId
+     *
+     * @return void
+     */
+    public static function updateProductStatus(int $productId): void
+    {
+        wp_update_post([
+            'ID' => $productId,
+            'post_status' => Settings::getProductStatus()
+        ]);
     }
 }

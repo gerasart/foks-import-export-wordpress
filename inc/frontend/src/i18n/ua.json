@@ -45,5 +45,7 @@
   "import_products_cli" : "Імпортувати товари CLI",
   "import_attributes_cli" : "Імпортувати атрібути CLI",
   "export_products_cli" : "Експорт товарів CLI",
-  "clear_products_cli" : "Видалити всі товари CLI"
+  "clear_products_cli" : "Видалити всі товари CLI",
+  "settings_product_status" : "Статус товарів",
+  "select_product_status" : "Виберіть статус товарів"
 }

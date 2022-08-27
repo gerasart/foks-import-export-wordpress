@@ -22,7 +22,7 @@ class ProductVariation
      * @param array $categories
      *
      * @return void
-      */
+     */
     public static function create(array $data, array $categories): void
     {
         $productId = wc_get_product_id_by_sku($data['sku']);
@@ -35,16 +35,37 @@ class ProductVariation
                     'post_title' => $data['name'],
                     'post_name' => $slug,
                     'post_content' => $data['description'],
-                    'post_status' => 'publish',
+                    'post_status' => Settings::getProductStatus(),
                     'ping_status' => 'closed',
                     'post_type' => 'product',
                 ];
 
                 $productId = wp_insert_post($post_data);
-
-                self::updateProduct($productId, $data, $categories);
+                $product = new \WC_Product_Variable($productId);
+                $product->set_name($data['name']);
+                $product->set_sku($data['sku']);
             } else {
-                self::updateProduct($productId, $data, $categories);
+                $product = wc_get_product($productId);
+
+                $variationIds = self::getProductVariationIds($product->get_id());
+                self::removeVariations($variationIds);
+            }
+
+            $isImgOption = Settings::isNeedImage();
+
+            Category::updateCategory($data, $productId, $categories);
+
+            if ($isImgOption) {
+                Image::addImages($productId, $data['images']);
+            }
+
+            if ($product instanceof \WC_Product) {
+                self::updateProduct($product, $data);
+            } else {
+                LogResourceModel::set([
+                    'action' => 'error',
+                    'message' => __CLASS__ . ': ' . __METHOD__ . "Product id: $productId wrong instance: " . gettype($product),
+                ]);
             }
         } catch (\WC_Data_Exception $e) {
             LogResourceModel::set([
@@ -55,27 +76,13 @@ class ProductVariation
     }
 
     /**
-     * @param int $productId
+     * @param \WC_Product $product
      * @param array $data
-     * @param array $categories
      *
      * @return void
-     * @throws \WC_Data_Exception
      */
-    public static function updateProduct(int $productId, array $data, array $categories): void
+    public static function updateProduct(\WC_Product $product, array $data): void
     {
-        $isImgOption = Settings::isNeedImage();
-
-        Category::updateCategory($data, $productId, $categories);
-
-        if ($isImgOption) {
-            Image::addImages($productId, $data['images']);
-        }
-
-        $product = new \WC_Product_Variable($productId);
-        $product->set_name($data['name']);
-        $product->set_sku($data['sku']);
-
         $attributes = self::prepareAttributes($data);
         $attrs = [];
         $index = 0;
@@ -98,8 +105,12 @@ class ProductVariation
             $product->set_attributes($attrs);
         }
 
+        $product->set_status(Settings::getProductStatus());
         $parentId = $product->save();
 
+        update_post_meta($parentId, '_foks_id', $data['foks_id']);
+
+        Product::updateProductStatus($parentId);
         $i = 0;
 
         foreach ($data['variation'] as $variation) {
@@ -109,7 +120,7 @@ class ProductVariation
             } catch (\WC_Data_Exception $e) {
                 LogResourceModel::set([
                     'action' => 'error',
-                    'message' => __CLASS__ . ': ' . __METHOD__ . ': ' . $e->getMessage(),
+                    'message' => __CLASS__ . ': ' . __METHOD__ . " foks id: {$data['foks_id']}: " . $e->getMessage(),
                 ]);
             }
         }
@@ -153,6 +164,8 @@ class ProductVariation
 
                 $variation->set_sku("{$data['sku']}-$parentId-$index");
                 $productId = $variation->save();
+
+                Product::updateProductStatus($productId);
 
                 if ($isLoadImage && isset($data['images'][0])) {
                     Image::addThumb($productId, $data['images'][0]);
@@ -219,5 +232,50 @@ class ProductVariation
         $row = AttributeResourceModel::getNameByIds(json_decode($variations));
 
         return $row->names ? explode(',', $row->names) : [];
+    }
+
+    /**
+     * @param int $productId
+     *
+     * @return array
+     */
+    public static function getProductVariationIds(int $productId): array
+    {
+        $product = wc_get_product($productId);
+
+        if ($product instanceof \WC_Product && self::isVariableProduct($product)) {
+            $variations = $product->get_available_variations();
+
+            return wp_list_pluck($variations, 'variation_id');
+        }
+
+        LogResourceModel::set([
+            'action' => 'error',
+            'message' => __CLASS__ . ': ' . __METHOD__ . ': is not WC_Product_Variable' . $productId,
+        ]);
+
+        return [];
+    }
+
+    /**
+     * @param array $variationIds
+     *
+     * @return void
+     */
+    public static function removeVariations(array $variationIds): void
+    {
+        if ($variationIds) {
+            foreach ($variationIds as $variationId) {
+                if (Product::PRODUCT_VARIATION === get_post_type($variationId)) {
+                    $variation = wc_get_product($variationId);
+                    $variation->delete(true);
+                }
+            }
+        }
+    }
+
+    public static function isVariableProduct(\WC_Product $product)
+    {
+        return is_a($product, \WC_Product_Variable::class);
     }
 }

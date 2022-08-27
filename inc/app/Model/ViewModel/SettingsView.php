@@ -13,6 +13,7 @@ namespace Foks\Model\ViewModel;
 use Foks\Export\Export;
 use Foks\Import\Import;
 use Foks\Model\Settings;
+use Foks\Model\Woocommerce\Product;
 
 class SettingsView
 {
@@ -26,6 +27,7 @@ class SettingsView
         $import = get_option(Settings::IMPORT_FIELD);
         $update = get_option(Settings::UPDATE_FIELD);
         $variations = get_option(Settings::VARIATION_FIELD);
+        $productStatus = get_option(Settings::PRODUCT_STATUS_FIELD);
 
         self::$admin_vars['settings'] = [
             'import' => $import ?: '',
@@ -39,7 +41,9 @@ class SettingsView
             'isExportFile' => file_exists(Export::EXPORT_PATH),
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'version' => FOKS_VERSION,
-            'exportUrl' => Export::EXPORT_URL
+            'exportUrl' => Export::EXPORT_URL,
+            'productStatus' => $productStatus ?: Product::PENDING_STATUS,
+            'statuses' => Product::PRODUCT_STATUSES,
         ];
     }
 
