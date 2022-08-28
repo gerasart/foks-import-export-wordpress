@@ -25,28 +25,20 @@ class ProductVariation
      */
     public static function create(array $data, array $categories): void
     {
-        $productId = wc_get_product_id_by_sku($data['sku']);
+        $slug = Translit::execute($data['name'], true);
+        $existProduct = Product::getProductByName($slug);
 
         try {
-            if (!$productId) {
-                $slug = Translit::execute($data['name'], true);
-
-                $post_data = [
-                    'post_title' => $data['name'],
-                    'post_name' => $slug,
-                    'post_content' => $data['description'],
-                    'post_status' => Settings::getProductStatus(),
-                    'ping_status' => 'closed',
-                    'post_type' => 'product',
-                ];
-
-                $productId = wp_insert_post($post_data);
-                $product = new \WC_Product_Variable($productId);
+            if (!$existProduct) {
+                $product = new \WC_Product_Variable();
                 $product->set_name($data['name']);
+                $product->set_description($data['description']);
+                $product->set_slug($slug);
                 $product->set_sku($data['sku']);
+                $productId = $product->save();
             } else {
-                $product = wc_get_product($productId);
-
+                $product = wc_get_product((int)$existProduct->ID);
+                $productId = $product->get_id();
                 $variationIds = self::getProductVariationIds($product->get_id());
                 self::removeVariations($variationIds);
             }
@@ -251,7 +243,7 @@ class ProductVariation
 
         LogResourceModel::set([
             'action' => 'error',
-            'message' => __CLASS__ . ': ' . __METHOD__ . ': is not WC_Product_Variable' . $productId,
+            'message' => __CLASS__ . ': ' . __METHOD__ . ': is not WC_Product_Variable -> ' . $productId,
         ]);
 
         return [];
@@ -274,7 +266,12 @@ class ProductVariation
         }
     }
 
-    public static function isVariableProduct(\WC_Product $product)
+    /**
+     * @param \WC_Product $product
+     *
+     * @return bool
+     */
+    public static function isVariableProduct(\WC_Product $product): bool
     {
         return is_a($product, \WC_Product_Variable::class);
     }

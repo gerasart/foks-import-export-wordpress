@@ -178,4 +178,19 @@ class Product
             'post_status' => Settings::getProductStatus()
         ]);
     }
+
+    /**
+     * @param string $name
+     *
+     * @return array|false|object|\stdClass
+     */
+    public static function getProductByName(string $name)
+    {
+        global $wpdb;
+
+        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_name  = '$name' LIMIT 1";
+        $data = $wpdb->get_row($query);
+
+        return $data ?: false;
+    }
 }

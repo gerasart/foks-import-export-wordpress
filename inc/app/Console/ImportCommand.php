@@ -72,7 +72,7 @@ class ImportCommand extends Command
             $progressBar->finish();
         }
 
-        $output->writeln('Complete.');
+        $output->writeln("\n Complete.");
 
         return 1;
     }
