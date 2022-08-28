@@ -132,6 +132,7 @@ class Image
     /**
      * @param int $productId
      * @param string $image
+     *
      * @return void
      */
     public static function addThumb(int $productId, string $image): void
@@ -162,6 +163,10 @@ class Image
             $title = $pathInfo['filename'];
 
             // Does the attachment already exist ?
+            if (!is_admin()) {
+                require_once(ABSPATH . 'wp-admin/includes/post.php');
+            }
+
             if (post_exists($title)) {
                 $attachment = get_page_by_title($title, OBJECT, 'attachment');
 

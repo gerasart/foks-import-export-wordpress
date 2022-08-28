@@ -62,7 +62,7 @@ class ProductVariation
         } catch (\WC_Data_Exception $e) {
             LogResourceModel::set([
                 'action' => 'error',
-                'message' => __CLASS__ . ': ' . __METHOD__ . ': ' . $e->getMessage(),
+                'message' => __CLASS__ . ': ' . __METHOD__ . ': ' . $e->getMessage() . " slug: -> $slug",
             ]);
         }
     }
