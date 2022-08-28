@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: FoksImportExport
- * Version: 2.0.0
+ * Version: 3.0.0
  * Plugin URI: https://metasync.site
  * Description: Import Export integration.
  * Author: Gerasart
