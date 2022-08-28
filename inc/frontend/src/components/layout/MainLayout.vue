@@ -43,8 +43,12 @@
       <q-toolbar>
         <q-toolbar-title>
           <div>
-            <span>v{{ Settings.version }}</span> <a class="devLogo" href="https://t.me/gerasart">
+            <span>v{{ Settings.version }}</span> <a class="iconLogo" href="https://t.me/gerasart">
             <img src="../../assets/images/developer.png" alt=""></a>
+            <q-space />
+            <a class="iconLogo" target="_blank" href="https://github.com/gerasart/foksImportExport">
+              <img src="../../assets/images/github.png" alt="">
+            </a>
           </div>
         </q-toolbar-title>
       </q-toolbar>
@@ -62,11 +66,11 @@ const Settings = ref(window?.settings);
 </script>
 
 <style scoped lang="scss">
-.logo, .devLogo {
+.logo, .iconLogo {
   vertical-align: sub;
 }
 
-.devLogo {
+.iconLogo {
   img {
     width: 24px
   }

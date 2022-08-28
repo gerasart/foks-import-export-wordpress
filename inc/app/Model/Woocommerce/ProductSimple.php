@@ -67,7 +67,7 @@ class ProductSimple
         }
 
         update_post_meta($productId, '_featured', "no");
-        update_post_meta($productId, '_sku', $product['sku']);
+        update_post_meta($productId, '_sku', $product['sku'] . '-' . $productId);
         update_post_meta($productId, '_product_attributes', []);
         Attribute::addAttributeGroup($productId, $product['attributes']);
         update_post_meta($productId, '_manage_stock', $manageStock);

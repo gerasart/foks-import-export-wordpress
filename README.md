@@ -14,7 +14,10 @@ We support over 450 clients from different countries (Europe, USA, Ukraine).
 ## Commands
 `chmod 755 wp-content/plugins/foksImportExport/bin/console.php`
 
-1. `php wp-content/plugins/foksImportExport/bin/console.php import-products`
+1. `php wp-content/plugins/foksImportExport/bin/console.php import-products`  - Import products
+2. `php wp-content/plugins/foksImportExport/bin/console.php import-attributes` - Import attributes
+3. `php wp-content/plugins/foksImportExport/bin/console.php export-products` - Export products
+4. `php wp-content/plugins/foksImportExport/bin/console.php clear-products` - Remove all products
 
 ## Changelog
 
