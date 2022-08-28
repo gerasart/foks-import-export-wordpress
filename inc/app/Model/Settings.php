@@ -21,22 +21,7 @@ class Settings
     public const IS_NEED_CRON_FIELD = 'foks_is_need_cron';
     public const IMG_FIELD = 'foks_img';
     public const PRODUCT_STATUS_FIELD = 'foks_product_status';
-
-    /**
-     * @param $variations
-     *
-     * @return void
-     */
-    public static function saveVariations($variations): void
-    {
-        $data = json_encode($variations);
-        update_option(self::VARIATION_FIELD, $data);
-
-        LogResourceModel::set([
-            'action' => 'save variations',
-            'message' => $data,
-        ]);
-    }
+    public const DESCRIPTION_TYPE_STATUS_FIELD = 'foks_description_type';
 
     /**
      * @param $data
@@ -54,6 +39,33 @@ class Settings
         LogResourceModel::set([
             'action' => 'save settings',
             'message' => json_encode($data),
+        ]);
+    }
+
+    /**
+     * @param $settings
+     *
+     * @return void
+     */
+    public static function saveVariations($settings): void
+    {
+        $data = json_encode($settings);
+        update_option(self::VARIATION_FIELD, $data);
+
+        LogResourceModel::set([
+            'action' => 'save variations',
+            'message' => $data,
+        ]);
+    }
+
+    public static function saveExportSettings($settings): void
+    {
+        $data = json_encode($settings);
+        update_option(self::DESCRIPTION_TYPE_STATUS_FIELD, $data);
+
+        LogResourceModel::set([
+            'action' => 'save variations',
+            'message' => $data,
         ]);
     }
 

@@ -80,21 +80,23 @@ class Product
         if ($attributes) {
             foreach ($attributes as $item) {
                 $value_names = $item->get_options();
+
                 if ($item->get_terms()) {
                     $value_names = [];
                     foreach ($item->get_terms() as $term) {
                         $value_names[] = $term->name;
                     }
                 }
+
                 $attr_data[] = [
                     'name' => $item->get_name(),
-                    'value' => implode(', ', $value_names),
+                    'value' => $value_names,
                     'terms' => $item->get_terms(),
                     'slug' => $item->get_data()
                 ];
             }
-
         }
+
         return (object)[
             'id' => $productId,
             'title' => html_entity_decode(get_the_title($productId)),
@@ -102,13 +104,14 @@ class Product
             'thumb' => $thumb ?: '',
             'images' => $images ?: [],
             'description' => $product->get_description(),
+            'short_description' => $product->get_short_description(),
             'status' => get_post_meta($productId, '_stock_status', true),
             'category' => $categories[0] ?? '',
             'category_id' => Category::getCategoryId((int)$productId),
             'price' => $price ?: '',
             'sale_price' => $sale_price ?: '',
             'quantity' => $quantity ?: self::DEFAULT_QUANTITY,
-            'sku' => $sku ?: '',
+            'sku' => $sku ?: $product->get_sku(),
             'params' => $attr_data ?: [],
             'vendor' => '',
         ];

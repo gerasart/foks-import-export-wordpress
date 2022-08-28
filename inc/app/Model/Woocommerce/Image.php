@@ -162,11 +162,11 @@ class Image
             $pathInfo = pathinfo($url);
             $title = $pathInfo['filename'];
 
-            // Does the attachment already exist ?
-            if (!is_admin()) {
+            if (!function_exists('post_exists')) {
                 require_once(ABSPATH . 'wp-admin/includes/post.php');
             }
 
+            // Does the attachment already exist ?
             if (post_exists($title)) {
                 $attachment = get_page_by_title($title, OBJECT, 'attachment');
 
