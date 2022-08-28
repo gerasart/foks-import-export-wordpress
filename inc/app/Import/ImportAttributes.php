@@ -51,7 +51,7 @@ class ImportAttributes
         } catch (\Exception $e) {
             LogResourceModel::set([
                 'action' => 'error',
-                'message' => $e->getMessage(),
+                'message' => __CLASS__.': '.__METHOD__.': '.$e->getMessage(),
             ]);
         }
     }

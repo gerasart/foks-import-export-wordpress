@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace Foks\Model\ViewModel;
 
+use Foks\Export\Export;
 use Foks\Import\Import;
 use Foks\Model\Settings;
+use Foks\Model\Woocommerce\Product;
 
 class SettingsView
 {
@@ -24,19 +26,24 @@ class SettingsView
     {
         $import = get_option(Settings::IMPORT_FIELD);
         $update = get_option(Settings::UPDATE_FIELD);
-        $img = get_option(Settings::IMG_FIELD);
         $variations = get_option(Settings::VARIATION_FIELD);
+        $productStatus = get_option(Settings::PRODUCT_STATUS_FIELD);
 
         self::$admin_vars['settings'] = [
             'import' => $import ?: '',
             'update' => $update ?: '1',
-            'isExportFile' => file_exists(FOKS_PATH. '/logs/foks_export.xml'),
             'export' => get_site_url() . '/wp-json/foks/foksExport',
             'logs_url' => FOKS_URL . 'logs/',
-            'img' => $img === 'true',
+            'img' => Settings::isNeedImage(),
+            'isNeedCron' => Settings::isNeedCron(),
             'variations' => $variations ? json_decode($variations) : '',
             'isImportFile' => file_exists(Import::IMPORT_PATH),
+            'isExportFile' => file_exists(Export::EXPORT_PATH),
             'ajaxUrl' => admin_url('admin-ajax.php'),
+            'version' => FOKS_VERSION,
+            'exportUrl' => Export::EXPORT_URL,
+            'productStatus' => $productStatus ?: Product::PENDING_STATUS,
+            'statuses' => Product::PRODUCT_STATUSES,
         ];
     }
 

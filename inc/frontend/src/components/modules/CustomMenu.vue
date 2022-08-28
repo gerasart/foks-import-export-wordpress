@@ -1,3 +1,10 @@
+<!--
+  - Copyright (c) 2022.
+  - Created by metasync.site.
+  - Developer: gerasymenkoph@gmail.com
+  - Link: https://t.me/gerasart
+  -->
+
 <template>
   <q-list>
     <template v-for="(menuItem, index) in menuList" :key="index">
@@ -63,6 +70,12 @@ const menuList = ref([
     route: 'Delete',
     separator: true
   },
+  {
+    icon: 'info',
+    label: t('title_commands'),
+    route: 'Commands',
+    separator: true
+  },
 ]);
 </script>
 
@@ -72,3 +85,4 @@ const menuList = ref([
   color:black;
 }
 </style>
+

@@ -14,6 +14,7 @@ use Foks\Import\Import;
 use Foks\Import\ImportAttributes;
 use Foks\Log\Logger;
 use Foks\Model\Resource\AttributeResourceModel;
+use Foks\Model\Settings;
 
 class AttributesAjax extends Ajax
 {
@@ -35,7 +36,7 @@ class AttributesAjax extends Ajax
         $isFile = file_exists(Import::IMPORT_PATH);
 
         if (!$isFile) {
-            $file = get_option(Import::IMPORT_FILE);
+            $file = get_option(Settings::IMG_FIELD);
             $xml = file_get_contents($file);
             Logger::file($xml, Import::IMPORT_FILE, 'xml');
         }

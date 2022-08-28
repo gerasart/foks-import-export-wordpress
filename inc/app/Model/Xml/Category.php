@@ -41,17 +41,18 @@ class Category
     }
 
     /**
-     * @param $categoriesList
-     * @param $parent_id
-     * @param $id
+     * @param array $categoriesList
+     * @param int $parentId
+     * @param int|null $id
+     *
      * @return string
      */
-    public static function getParentCatName($categoriesList, $parent_id, $id = null): string
+    public static function getParentCatName(array $categoriesList, int $parentId, ?int $id = null): string
     {
         $catName = '';
 
         foreach ($categoriesList as $cat) {
-            if ((int)$cat['id'] === $parent_id) {
+            if ((int)$cat['id'] === $parentId) {
                 $catName = $cat['name'];
                 break;
             }

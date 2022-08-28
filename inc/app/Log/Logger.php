@@ -22,7 +22,15 @@ class Logger implements LoggerInterface
         file_put_contents($filePath, json_encode($data) . "\n", FILE_APPEND);
     }
 
-    public static function file($data, string $name, string $format = 'log') {
+    /**
+     * @param $data
+     * @param string $name
+     * @param string $format
+     *
+     * @return void
+     */
+    public static function file($data, string $name, string $format = 'log'): void
+    {
         $filePath = FOKS_PATH . "/logs/$name.$format";
 
         file_put_contents($filePath, $data);

@@ -38,4 +38,12 @@ class SettingsAjax extends Ajax
 
         wp_send_json_success($post);
     }
+
+    public static function ajaxExportSettings(): void
+    {
+        $post = $_POST['data'] ?? '';
+        Settings::saveExportSettings($post);
+
+        wp_send_json_success($post);
+    }
 }

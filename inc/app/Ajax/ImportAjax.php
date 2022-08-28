@@ -13,6 +13,7 @@ namespace Foks\Ajax;
 use Foks\Import\Import;
 use Foks\Log\Logger;
 use Foks\Model\Resource\LogResourceModel;
+use Foks\Model\Settings;
 
 class ImportAjax extends Ajax
 {
@@ -23,7 +24,7 @@ class ImportAjax extends Ajax
     public static function ajax_nopriv_importFoks(): void
     {
         Logger::file(0, 'total', 'json');
-        $file = get_option(Import::IMPORT_FILE);
+        $file = get_option(Settings::IMPORT_FIELD);
         $data = [];
 
         if ($file) {

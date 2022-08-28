@@ -17,6 +17,10 @@ use Foks\Model\Woocommerce\Product;
 
 class Export
 {
+    public const EXPORT_FILE = 'foks_export';
+    public const EXPORT_PATH =  FOKS_PATH . 'logs/'.self::EXPORT_FILE.'.xml';
+    public const EXPORT_URL =  FOKS_URL . 'logs/'.self::EXPORT_FILE.'.xml';
+
     /**
      * @return void
      */
@@ -95,14 +99,7 @@ class Export
                 $output .= "\t" . '<description>' . htmlspecialchars($product->description) . "\n";
                 $output .= "\t" . '</description>' . "\n";
                 if ($product->params):
-                    foreach ($product->params as $attr) :
-                        if (!$attr['terms']) {
-                            $output .= "\t" . '<param name="' . $attr['name'] . '">' . $attr['value'] . '</param>' . "\n";
-                        } else {
-                            $attr_name = wc_attribute_label($attr['name']);
-                            $output .= "\t" . '<param name="' . $attr_name . '">' . $attr['value'] . '</param>' . "\n";
-                        }
-                    endforeach;
+                    $output .= self::generateAttributesXml($product->params);
                 endif;
                 $output .= "\t" . '</offer>' . "\n";
             }
@@ -111,7 +108,7 @@ class Export
         $output .= '</shop>' . "\n";
         $output .= '</yml_catalog>';
 
-        Logger::file($output, 'foks_export', 'xml');
+        Logger::file($output, self::EXPORT_FILE, 'xml');
 
         LogResourceModel::set([
             'action' => 'export',
@@ -119,5 +116,24 @@ class Export
         ]);
 
         return ['result' => 'ok'];
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     */
+    private static function generateAttributesXml(array $params): string
+    {
+        $output = '';
+
+        foreach ($params as $attr) {
+            if (!$attr['terms']) {
+                $output .= "\t" . '<param name="' . $attr['name'] . '">' . implode(',', $attr['value']) . '</param>' . "\n";
+            } else {
+                $attr_name = wc_attribute_label($attr['name']);
+                $output .= "\t" . '<param name="' . $attr_name . '">' . htmlspecialchars(implode('<br>', $attr['value'])) . '</param>' . "\n";
+            }
+        }
+        return $output;
     }
 }

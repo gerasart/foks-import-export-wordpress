@@ -1,3 +1,10 @@
+<!--
+  - Copyright (c) 2022.
+  - Created by metasync.site.
+  - Developer: gerasymenkoph@gmail.com
+  - Link: https://t.me/gerasart
+  -->
+
 <template>
   <div class="q-pa-md q-gutter-sm">
     <div class="mainTitle">{{ $t('title_export') }}</div>
@@ -6,8 +13,7 @@
         <q-avatar>
           <img class="" src="../../assets/images/xml.png" alt="xml">
         </q-avatar>
-        <a target="_blank" :href="Settings?.logs_url+$t('export_file')">
-        {{ Settings?.logs_url }}{{ $t('export_file') }}</a>
+        <a target="_blank" :href="Settings?.exportUrl">{{ Settings?.exportUrl }}</a>
       </div>
       <hr>
       <q-btn v-if="!isProgress" color="purple" @click="ExportData" :label="$t('export_now')"/>

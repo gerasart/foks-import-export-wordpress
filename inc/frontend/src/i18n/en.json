@@ -15,7 +15,7 @@
   "saved": "Saved!",
   "settings_cron": "Import/Export Cron",
   "import_label": "Import url",
-  "settings_img": "Import without img",
+  "settings_img": "Is import with images",
   "export_file": "foks_export.xml",
   "on_off": "On/Off",
   "title_delete": "Delete products",
@@ -38,5 +38,14 @@
   "action": "Action",
   "message": "Message",
   "search": "Search",
-  "created_at": "Created at"
+  "created_at": "Created at",
+  "wp_logs": "WP logs",
+  "settings_is_need_cron": "Is enable cron",
+  "title_commands" : "CLI Commands",
+  "import_products_cli" : "Import products CLI",
+  "import_attributes_cli" : "Import variable attributes CLI",
+  "export_products_cli" : "Export products CLI",
+  "clear_products_cli" : "Remove all products CLI",
+  "settings_product_status" : "Default product status",
+  "select_product_status" : "Select product status"
 }

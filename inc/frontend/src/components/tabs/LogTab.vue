@@ -1,11 +1,23 @@
+<!--
+  - Copyright (c) 2022.
+  - Created by metasync.site.
+  - Developer: gerasymenkoph@gmail.com
+  - Link: https://t.me/gerasart
+  -->
+
 <template>
   <div class="q-pa-md">
     <div class="mainTitle">{{ $t('title_logs') }}</div>
-    <q-btn class="mb30" color="purple" @click="removeLogs" :label="$t('clear_logs')"/>
+    <q-btn class="mb30 mr30" color="purple" @click="removeLogs" :label="$t('clear_logs')" />
+    <q-btn class="mb30" color="primary" @click="getWPLogs" :label="$t('wp_logs')" />
+
+    <wp-log-info v-if="isWpLogs" v-model:dialog="isWpLogs" />
+
     <q-table
       :rows="data.rows"
       :columns="columns"
       :loading="loading"
+      :pagination="pagination"
       row-key="name"
       :filter="filter"
       :auto-width="false"
@@ -37,10 +49,12 @@ import axios from "axios";
 import * as qs from "qs";
 import {useQuasar} from "quasar";
 import { useI18n } from 'vue-i18n';
+import WpLogInfo from "../modules/WpLogInfo.vue";
 
 const { t } = useI18n();
 const $q = useQuasar();
 const filter = ref('');
+const isWpLogs = ref(false);
 const Settings = ref(window?.settings);
 const columns = ref([
   { name: 'id', label: 'Id', field: 'id', sortable: true },
@@ -52,7 +66,11 @@ const columns = ref([
   { name: 'created_at', label: t('created_at'), field: 'created_at', sortable: true },
 ]);
 const data = reactive({rows: []});
-const loading = ref(false)
+const loading = ref(false);
+const pagination = ref({
+  sortBy: 'asc',
+  rowsPerPage: 20,
+})
 
 loading.value = true;
 onMounted(() => {
@@ -87,5 +105,9 @@ function getLogs() {
     data.rows = res?.data?.data || [];
     loading.value = false;
   });
+}
+
+function getWPLogs() {
+  isWpLogs.value = true;
 }
 </script>

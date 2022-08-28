@@ -42,11 +42,11 @@ class Translit
             return strtr($title, $words) ?: '';
         }
 
-        $title = mb_strtolower($title);
-        $title = strtr($title, $words);
-        $title = mb_ereg_replace('[^-0-9a-z]', '-', $title);
-        $title = mb_ereg_replace('[-]+', '-', $title);
+        $result = wc_strtolower($title);
+        $result = strtr($result, $words);
+        $result = mb_ereg_replace('[^-0-9a-z]', '-', $result);
+        $result = mb_ereg_replace('[-]+', '-', $result);
 
-        return trim($title, '-');
+        return trim($result, '-');
     }
 }

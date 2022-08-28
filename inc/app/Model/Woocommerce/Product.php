@@ -11,18 +11,52 @@ declare(strict_types=1);
 namespace Foks\Model\Woocommerce;
 
 use Foks\Log\Logger;
+use Foks\Model\Settings;
 
 class Product
 {
     public const SIMPLE_TYPE = 'simple';
     public const VARIATION_TYPE = 'variation';
+    public const PRODUCT_VARIATION = 'product_variation';
     public const DEFAULT_QUANTITY = 999;
+    public const PUBLISH_STATUS = 'publish';
+    public const PENDING_STATUS = 'pending';
+    public const DRAFT_STATUS = 'draft';
+
+    public const PRODUCT_STATUSES = [
+        self::PUBLISH_STATUS,
+        self::PENDING_STATUS,
+        self::DRAFT_STATUS
+    ];
 
     /**
-     * @param $productId
+     * @param array $products
+     * @param array $categories
+     */
+    public static function addProducts(array $products, array $categories): void
+    {
+        $i = 0;
+
+        foreach ($products as $product) {
+            $i++;
+            Logger::file($i, 'current', 'json');
+            $productType = empty($product['variation']) || count($product['variation']) === 1 ? self::SIMPLE_TYPE : self::VARIATION_TYPE;
+            $isVariation = $productType === self::VARIATION_TYPE;
+
+            if ($isVariation) {
+                ProductVariation::create($product, $categories);
+            } else {
+                ProductSimple::create($product, $categories);
+            }
+        }
+    }
+
+    /**
+     * @param int $productId
+     *
      * @return object
      */
-    public static function getProductById($productId)
+    public static function getProductById(int $productId)
     {
         $thumb = has_post_thumbnail($productId) ? get_the_post_thumbnail_url($productId, 'full') : false;
         $categories = wp_get_post_terms($productId, 'product_cat', ['fields' => 'names']);
@@ -46,21 +80,23 @@ class Product
         if ($attributes) {
             foreach ($attributes as $item) {
                 $value_names = $item->get_options();
+
                 if ($item->get_terms()) {
                     $value_names = [];
                     foreach ($item->get_terms() as $term) {
                         $value_names[] = $term->name;
                     }
                 }
+
                 $attr_data[] = [
                     'name' => $item->get_name(),
-                    'value' => implode(', ', $value_names),
+                    'value' => $value_names,
                     'terms' => $item->get_terms(),
                     'slug' => $item->get_data()
                 ];
             }
-
         }
+
         return (object)[
             'id' => $productId,
             'title' => html_entity_decode(get_the_title($productId)),
@@ -68,42 +104,17 @@ class Product
             'thumb' => $thumb ?: '',
             'images' => $images ?: [],
             'description' => $product->get_description(),
+            'short_description' => $product->get_short_description(),
             'status' => get_post_meta($productId, '_stock_status', true),
             'category' => $categories[0] ?? '',
-            'category_id' => Category::getCategoryId($productId),
+            'category_id' => Category::getCategoryId((int)$productId),
             'price' => $price ?: '',
             'sale_price' => $sale_price ?: '',
             'quantity' => $quantity ?: self::DEFAULT_QUANTITY,
-            'sku' => $sku ?: '',
+            'sku' => $sku ?: $product->get_sku(),
             'params' => $attr_data ?: [],
             'vendor' => '',
         ];
-    }
-
-    /**
-     * todo remove -> Бюстгальтер push-up gel Lormar (2166)
-     * @param $products
-     * @param $categories
-     *
-     * @throws \Exception
-     */
-    public static function addProducts($products, $categories): void
-    {
-        $isLoadImage = !get_option('foks_img') || get_option('foks_img') === 'false';
-        $i = 0;
-
-        foreach ($products as $product) {
-            $i++;
-            Logger::file($i, 'current', 'json');
-            $productType = empty($product['variation']) ? self::SIMPLE_TYPE : self::VARIATION_TYPE;
-            $isVariation = $productType === self::VARIATION_TYPE;
-
-            if ($isVariation) {
-                ProductVariation::create($product, $categories, $isLoadImage);
-            } else {
-//                ProductSimple::create($product, $categories, $isLoadImage);
-            }
-        }
     }
 
     public static function getProducts(): array
@@ -120,8 +131,8 @@ class Product
         $products = $query->get_products();
         $result = [];
 
-        foreach ($products as $product_id) {
-            $result[] = self::getProductById($product_id);
+        foreach ($products as $productId) {
+            $result[] = self::getProductById((int)$productId);
         }
         return $result;
     }
@@ -155,5 +166,34 @@ class Product
         }
 
         return 1;
+    }
+
+
+    /**
+     * @param int $productId
+     *
+     * @return void
+     */
+    public static function updateProductStatus(int $productId): void
+    {
+        wp_update_post([
+            'ID' => $productId,
+            'post_status' => Settings::getProductStatus()
+        ]);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return array|false|object|\stdClass
+     */
+    public static function getProductByName(string $name)
+    {
+        global $wpdb;
+
+        $query = "SELECT * FROM {$wpdb->prefix}posts WHERE post_name  = '$name' LIMIT 1";
+        $data = $wpdb->get_row($query);
+
+        return $data ?: false;
     }
 }

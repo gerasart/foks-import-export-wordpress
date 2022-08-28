@@ -23,15 +23,18 @@ class Import
 {
     public const IMPORT_FILE = 'foks_import';
     public const IMPORT_PATH =  FOKS_PATH . 'logs/'.self::IMPORT_FILE.'.xml';
-    public const IMPORT_URL =  FOKS_URL . 'logs/'.self::IMPORT_FILE.'.xml';
 
     /**
-     * @param $file
+     * @param string $file
+     *
      * @return array
      * @throws \Exception
      */
-    public static function importData($file): array
+    public static function importData(string $file): array
     {
+        Logger::file(0, 'total', 'json');
+        Logger::file(0, 'current', 'json');
+
         $data = self::parseFile($file);
         $categories = Category::addCategories($data['categories']);
         $products = ProductVariation::prepareVariationProducts($data['products']);
@@ -58,7 +61,7 @@ class Import
         } catch (\Exception $e) {
             LogResourceModel::set([
                 'action' => 'error',
-                'message' => $e->getMessage(),
+                'message' => __CLASS__.': '.__METHOD__.': '.$e->getMessage(),
             ]);
         }
 
