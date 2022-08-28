@@ -34,7 +34,8 @@ class ProductVariation
                 $product->set_name($data['name']);
                 $product->set_description($data['description']);
                 $product->set_slug($slug);
-                $product->set_sku($data['sku']);
+                $productId = $product->save();
+                $product->set_sku($data['sku'].'-'.$productId);
                 $productId = $product->save();
             } else {
                 $product = wc_get_product((int)$existProduct->ID);
