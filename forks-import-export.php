@@ -15,6 +15,13 @@ if (!defined('ABSPATH')) {
 const FOKS_VERSION = '3.0.0';
 const FOKS_NAME = 'foks';
 
+/**
+ * Git settings for update.
+ */
+const GIT_SLAG = 'forks-import-export';
+const GIT_BRANCH = 'master';
+const GIT_TOKEN = '137a212dbbd60668fdfd7845edc112914d59ff2a';
+
 define('FOKS_BASENAME', plugin_basename(__FILE__));
 define('FOKS_PATH', plugin_dir_path(__FILE__));
 define('FOKS_URL', plugin_dir_url(__FILE__));
@@ -81,8 +88,8 @@ require 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
     'https://github.com/gerasart/foksImportExport/',
     __FILE__,
-    'forks-import-export'
+    GIT_SLAG
 );
-$myUpdateChecker->setAuthentication('137a212dbbd60668fdfd7845edc112914d59ff2a');
-$myUpdateChecker->setBranch('master');
+//$myUpdateChecker->setAuthentication(GIT_TOKEN);
+$myUpdateChecker->setBranch(GIT_BRANCH);
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
