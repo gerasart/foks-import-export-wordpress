@@ -20,7 +20,6 @@ const FOKS_NAME = 'foks';
  */
 const GIT_SLAG = 'forks-import-export';
 const GIT_BRANCH = 'master';
-const GIT_TOKEN = '137a212dbbd60668fdfd7845edc112914d59ff2a';
 
 define('FOKS_BASENAME', plugin_basename(__FILE__));
 define('FOKS_PATH', plugin_dir_path(__FILE__));
@@ -90,6 +89,6 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
     __FILE__,
     GIT_SLAG
 );
-//$myUpdateChecker->setAuthentication(GIT_TOKEN);
+
 $myUpdateChecker->setBranch(GIT_BRANCH);
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
