@@ -128,7 +128,7 @@ class Export
 
         foreach ($params as $attr) {
             if (!$attr['terms']) {
-                $output .= "\t" . '<param name="' . $attr['name'] . '">' . implode(',', $attr['value']) . '</param>' . "\n";
+                $output .= "\t" . '<param name="' . $attr['name'] . '">' . implode('<br />', $attr['value']) . '</param>' . "\n";
             } else {
                 $attr_name = wc_attribute_label($attr['name']);
                 $output .= "\t" . '<param name="' . $attr_name . '">' . htmlspecialchars(implode('<br>', $attr['value'])) . '</param>' . "\n";
